@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.ecommerce.organicos.model.Usuarios;
 
 @Repository
-public interface UsuariosRepository extends JpaRepository<Usuarios, Integer> {
+public interface UsuariosRepository extends JpaRepository<Usuarios, Long> {
 
 }

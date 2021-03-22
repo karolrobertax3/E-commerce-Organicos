@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.ecommerce.organicos.model.Produtos;
 
 @Repository
-public interface ProdutosRepository extends JpaRepository<Produtos, Integer> {
+public interface ProdutosRepository extends JpaRepository<Produtos, Long> {
 
 }
