@@ -15,7 +15,7 @@ public class Categoria {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer idCategoria;
+	private Long idCategoria;
 
 
 	private boolean organico;
@@ -23,8 +23,8 @@ public class Categoria {
 	private boolean hortalicas;
 	private boolean legumes;
 	
-	@OneToMany
-	public List<Produtos> produto;
+	@OneToMany(mappedBy = "categoriaDoProduto")
+	public List<Produtos> produtos;
 	
 
 	public Categoria(boolean organico) {
@@ -39,11 +39,11 @@ public class Categoria {
 		this.legumes = legumes;
 	}
 	
-	public Integer getIdCategoria() {
+	public Long getIdCategoria() {
 		return idCategoria;
 	}
 
-	public void setIdCategoria(Integer idCategoria) {
+	public void setIdCategoria(Long idCategoria) {
 		this.idCategoria = idCategoria;
 	}
 
@@ -72,10 +72,10 @@ public class Categoria {
 		this.legumes = legumes;
 	}
 	public List<Produtos> getProduto() {
-		return produto;
+		return produtos;
 	}
 
 	public void setProduto(List<Produtos> produto) {
-		this.produto = produto;
+		this.produtos = produto;
 	}
 }
