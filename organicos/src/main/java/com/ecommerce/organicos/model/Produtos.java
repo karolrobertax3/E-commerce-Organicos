@@ -33,6 +33,18 @@ public class Produtos {
 	
 	@Column(name="Preço", columnDefinition="Decimal(5,2) default '0.00'")
 	private float preco;
+<<<<<<< Updated upstream
+=======
+	
+	
+	@ManyToMany(mappedBy = "produtos")
+	private List<Usuarios> usuarios = new ArrayList<>();
+	
+	
+	@ManyToOne
+	@JoinColumn(name="categoria_id")
+	private Categoria categoriaDoProduto;
+>>>>>>> Stashed changes
 
 	
 	public Produtos() {
