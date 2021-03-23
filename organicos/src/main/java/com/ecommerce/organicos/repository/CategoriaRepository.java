@@ -9,7 +9,7 @@ import com.ecommerce.organicos.model.Categoria;
 import com.ecommerce.organicos.model.Produtos;
 
 @Repository
-public interface CategoriaRepository extends JpaRepository<Categoria, Integer>{
+public interface CategoriaRepository extends JpaRepository<Categoria, Long>{
 
 	public List<Produtos> findAllByOrganico (String categoria);
 }
