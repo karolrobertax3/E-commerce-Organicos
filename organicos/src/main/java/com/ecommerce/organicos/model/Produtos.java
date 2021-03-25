@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -37,16 +39,24 @@ public class Produtos {
 	@Size(max = 250)
 	private String descricao;
 	
-	@Column(name="Preço", columnDefinition="Decimal(5,2) default '0.00'")
-	private float preco;	
+	@NotNull
+	private boolean organico;
+	
+	@NotNull
+	@Enumerated(EnumType.STRING)
+	private CategoriaEnum categoriaDoProduto;
+	
+	
+	@Column(name="Preço", columnDefinition="Decimal(5,2)")
+	private float preco;
+	
 	
 	@ManyToMany(mappedBy = "produtos")
 	private List<Usuarios> usuarios = new ArrayList<>();
-	
-	@ManyToOne
-	@JoinColumn(name="categoria_id")
-	private Categoria categoriaDoProduto;
 
+	
+
+	
 	public Produtos() {
 
 	}
@@ -90,6 +100,30 @@ public class Produtos {
 		this.usuarios = usuarios;
 	}
 	
+	public boolean getOrganico() {
+		return organico;
+	}
+
+	public void setOrganico(boolean organico) {
+		this.organico = organico;
+	}
+
+	public CategoriaEnum getCategoriaDoProduto() {
+		return categoriaDoProduto;
+	}
+
+	public void setCategoriaDoProduto(CategoriaEnum categoriaDoProduto) {
+		this.categoriaDoProduto = categoriaDoProduto;
+	}
+
+	/*public Categoria getCategoriaDoProduto() {
+		return categoriaDoProduto;
+	}
+
+	public void setCategoriaDoProduto(Categoria categoriaDoProduto) {
+		this.categoriaDoProduto = categoriaDoProduto;
+	}*/
+
 	
 
 }

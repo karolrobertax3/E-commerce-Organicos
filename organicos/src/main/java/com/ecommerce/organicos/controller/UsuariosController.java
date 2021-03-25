@@ -28,7 +28,7 @@ public class UsuariosController {
 		
 	}
 	
-	@GetMapping
+	@GetMapping("/produtores/{regiao}")
 	public ResponseEntity<List<Usuarios>> getByRegiao(@PathVariable String regiao){
 		return ResponseEntity.ok(repository.findAllByEnderecoContainingIgnoreCase(regiao));
 	}

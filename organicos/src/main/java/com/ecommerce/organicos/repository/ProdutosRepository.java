@@ -11,6 +11,7 @@ import com.ecommerce.organicos.model.Produtos;
 @Repository
 public interface ProdutosRepository extends JpaRepository<Produtos, Long> {
 	
+	public List<Produtos> findAllByOrganico (boolean organico);
 	public List<Produtos> findByDataSafra (Date data);
 
 }
