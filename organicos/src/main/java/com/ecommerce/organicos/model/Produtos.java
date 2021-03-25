@@ -55,8 +55,6 @@ public class Produtos {
 	private List<Usuarios> usuarios = new ArrayList<>();
 
 	
-
-	
 	public Produtos() {
 
 	}
