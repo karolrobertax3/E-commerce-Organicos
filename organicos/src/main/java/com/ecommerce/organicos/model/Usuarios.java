@@ -32,11 +32,11 @@ public class Usuarios {
 	
 	@NotNull
 	@Size(min = 11, max = 14)
-	private String CPF;
+	private String cpf;
 	
 	@NotNull
 	@Size(min = 14, max = 18)
-	private String CNPJ;
+	private String cnpj;
 	
 	@NotNull
 	@Size(min = 10, max = 50)
@@ -84,18 +84,23 @@ public class Usuarios {
 	public void setRazaoSocial(String razaoSocial) {
 		this.razaoSocial = razaoSocial;
 	}
-	public String getCPF() {
-		return CPF;
+
+	public String getCpf() {
+		return cpf;
 	}
-	public void setCPF(String cPF) {
-		CPF = cPF;
+
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
 	}
-	public String getCNPJ() {
-		return CNPJ;
+
+	public String getCnpj() {
+		return cnpj;
 	}
-	public void setCNPJ(String cNPJ) {
-		CNPJ = cNPJ;
+
+	public void setCnpj(String cnpj) {
+		this.cnpj = cnpj;
 	}
+
 	public String getEmail() {
 		return email;
 	}
