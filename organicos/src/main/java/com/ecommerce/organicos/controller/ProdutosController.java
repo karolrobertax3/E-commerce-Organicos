@@ -42,8 +42,31 @@ public class ProdutosController {
 	
 	@GetMapping("/organicos")
 	public ResponseEntity <List<Produtos>> listarOrganicos(@RequestParam(defaultValue = "") boolean organicos){
-		return new ResponseEntity <List<Produtos>> (service.listarOrganicos(organicos),HttpStatus.ACCEPTED);
+		return new ResponseEntity <List<Produtos>> (service.listarOrganicos(organicos),HttpStatus.OK);
 	}
+	
+	@PostMapping
+	public ResponseEntity <Produtos> postar(@RequestBody Produtos produtos){
+		return new ResponseEntity <Produtos> (service.postar(produtos),HttpStatus.CREATED);
+		
+	}
+		
+	@PutMapping
+	public ResponseEntity<?> alterar(@RequestBody Produtos produtos){
+		Optional<Produtos> alterado = service.alterar(produtos);
+		if (alterado.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Produto Inexistente");
+	    }	
+		else {
+			return ResponseEntity.status(HttpStatus.OK).body(alterado.get());
+		}
+	}
+		
+	@DeleteMapping("/deletar/{idProduto}")
+	public void deletar(Produtos produtos) {
+		service.deletar(produtos);
+	}
+<<<<<<< HEAD
 	
 	@PostMapping
 	public ResponseEntity <Produtos> postar(@RequestBody Produtos produtos){
@@ -68,3 +91,6 @@ public class ProdutosController {
 	}
 	
 }
+=======
+}
+>>>>>>> edb0057b8a3d66f1a261f7da43a8aac4dee65865

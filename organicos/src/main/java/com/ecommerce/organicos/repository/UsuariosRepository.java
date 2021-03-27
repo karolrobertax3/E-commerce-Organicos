@@ -11,7 +11,7 @@ import com.ecommerce.organicos.model.Usuarios;
 @Repository
 public interface UsuariosRepository extends JpaRepository<Usuarios, Long> {
 	
-	public List<Produtos> findAllByNomeContainingIgnoreCase (String nome);
+	public List<Usuarios> findAllByNomeContainingIgnoreCase (String nome);
 	public List<Usuarios> findAllByEnderecoContainingIgnoreCase (String regiao);
 
 }
