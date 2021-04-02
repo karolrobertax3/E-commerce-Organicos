@@ -3,16 +3,21 @@ package com.ecommerce.organicos.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "usuarios")
@@ -20,7 +25,7 @@ public class Usuarios {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Long idUsuario;
 	
 	@NotNull
 	@Size(min = 10, max = 50)
@@ -54,24 +59,34 @@ public class Usuarios {
 	@Size(min = 8)
 	private String senha;
 	
+	private float valorCompra;
 	
-	@ManyToMany
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinTable(
-	  name = "compras_vendas", 
-	  joinColumns = @JoinColumn(name = "usuario_id"), 
+	  name = "compras", 
+	  joinColumns = @JoinColumn(name = "comprador_id"), 
 	  inverseJoinColumns = @JoinColumn(name = "produto_id"))
-	private List<Produtos> produtos = new ArrayList<>();
+	@JsonIgnoreProperties({"compradoPor", "qtdCompras"})
+	private List<Produtos> minhasCompras = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "criadoPor", cascade = CascadeType.ALL)
+	@JsonIgnoreProperties("criadoPor")
+	private List<Produtos> meusProdutos = new ArrayList<>();
 
 	public Usuarios() {
 		
 	}
-	
-	public Long getId() {
-		return id;
+
+	public Long getIdUsuario() {
+		return idUsuario;
 	}
-	public void setId(Long id) {
-		this.id = id;
+
+
+	public void setIdUsuario(Long idUsuario) {
+		this.idUsuario = idUsuario;
 	}
+
+
 	public String getNome() {
 		return nome;
 	}
@@ -126,12 +141,28 @@ public class Usuarios {
 		this.senha = senha;
 	}
 
-	public List<Produtos> getProdutos() {
-		return produtos;
+	public float getValorCompra() {
+		return valorCompra;
 	}
 
-	public void setProdutos(List<Produtos> produtos) {
-		this.produtos = produtos;
+	public void setValorCompra(float valorCompra) {
+		this.valorCompra = valorCompra;
+	}
+
+	public List<Produtos> getMinhasCompras() {
+		return minhasCompras;
+	}
+
+	public void setMinhasCompras(List<Produtos> minhasCompras) {
+		this.minhasCompras = minhasCompras;
+	}
+
+	public List<Produtos> getMeusProdutos() {
+		return meusProdutos;
+	}
+
+	public void setMeusProdutos(List<Produtos> meusProdutos) {
+		this.meusProdutos = meusProdutos;
 	}
 	
 
