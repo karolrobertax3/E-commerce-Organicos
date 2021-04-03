@@ -20,6 +20,8 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name = "produtos")
 public class Produtos {
@@ -42,6 +44,10 @@ public class Produtos {
 	@NotNull
 	private boolean organico;
 	
+	private int qtdEstoque;
+	
+	private int qtdCompras;
+	
 	@NotNull
 	@Enumerated(EnumType.STRING)
 	private CategoriaEnum categoriaDoProduto;
@@ -50,10 +56,14 @@ public class Produtos {
 	@Column(name="Preço", columnDefinition="Decimal(5,2)")
 	private float preco;
 	
+	@ManyToOne
+	@JoinColumn(name = "criador")
+	@JsonIgnoreProperties({"meusProdutos", "minhasCompras"})
+	private Usuarios criadoPor;
 	
-	@ManyToMany(mappedBy = "produtos")
-	private List<Usuarios> usuarios = new ArrayList<>();
-	
+	@ManyToMany(mappedBy = "minhasCompras")
+	@JsonIgnoreProperties("meusProdutos")
+	private List<Usuarios> compradoPor = new ArrayList<>();
 	
 	/*@ManyToOne
 	@JoinColumn(name="categoria_id")
@@ -95,14 +105,6 @@ public class Produtos {
 	public void setPreco(float preco) {
 		this.preco = preco;
 	}
-
-	public List<Usuarios> getUsuarios() {
-		return usuarios;
-	}
-
-	public void setUsuarios(List<Usuarios> usuarios) {
-		this.usuarios = usuarios;
-	}
 	
 	public boolean getOrganico() {
 		return organico;
@@ -110,6 +112,22 @@ public class Produtos {
 
 	public void setOrganico(boolean organico) {
 		this.organico = organico;
+	}
+
+	public int getQtdEstoque() {
+		return qtdEstoque;
+	}
+
+	public void setQtdEstoque(int qtdEstoque) {
+		this.qtdEstoque = qtdEstoque;
+	}
+
+	public int getQtdCompras() {
+		return qtdCompras;
+	}
+
+	public void setQtdCompras(int qtdCompras) {
+		this.qtdCompras = qtdCompras;
 	}
 
 	public CategoriaEnum getCategoriaDoProduto() {
@@ -120,6 +138,22 @@ public class Produtos {
 		this.categoriaDoProduto = categoriaDoProduto;
 	}
 
+	public Usuarios getCriadoPor() {
+		return criadoPor;
+	}
+
+	public void setCriadoPor(Usuarios criadoPor) {
+		this.criadoPor = criadoPor;
+	}
+
+	public List<Usuarios> getCompradoPor() {
+		return compradoPor;
+	}
+
+	public void setCompradoPor(List<Usuarios> compradoPor) {
+		this.compradoPor = compradoPor;
+	}
+
 	/*public Categoria getCategoriaDoProduto() {
 		return categoriaDoProduto;
 	}
@@ -127,7 +161,5 @@ public class Produtos {
 	public void setCategoriaDoProduto(Categoria categoriaDoProduto) {
 		this.categoriaDoProduto = categoriaDoProduto;
 	}*/
-
-	
 
 }

@@ -27,7 +27,8 @@ public class ProdutoService {
 		return repository.findAllByOrganico(organico);
 	}
 	
-	public Produtos postar(Produtos produtos) {
+	/* Essa funcionalidade foi migrada para o usuarioService, pois o usuário posta, altera e deleta os produtos.
+	 * public Produtos postar(Produtos produtos) {
 		return repository.save(produtos);
 		
 	}
@@ -50,5 +51,5 @@ public class ProdutoService {
 		
 	public void deletar(Produtos produtos) {
 		repository.deleteById(produtos.getIdProduto());
-	}
+	}*/
 }
