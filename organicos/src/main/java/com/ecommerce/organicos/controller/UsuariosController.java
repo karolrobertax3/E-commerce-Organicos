@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ecommerce.organicos.model.Produtos;
 import com.ecommerce.organicos.model.Usuarios;
-import com.ecommerce.organicos.repository.UsuariosRepository;
 import com.ecommerce.organicos.service.UsuarioService;
 
 @RestController
@@ -82,4 +81,50 @@ public class UsuariosController {
 	public void deletar(Usuarios usuarios) {
 		service.deletar(usuarios);
 	}
+	
+	/*@PostMapping("/produto/novo/{id_Usuario}")
+	public ResponseEntity<?> novoProduto(
+			@PathVariable(value = "id_Usuario") Long idUsuario,
+			@Valid @RequestBody Produtos novoProduto) {
+		Produtos cadastro = service.cadastrarProduto(novoProduto, idUsuario);
+		if(cadastro == null) {
+			return new ResponseEntity<String>("Falha no cadastro", HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<Produtos>(cadastro, HttpStatus.CREATED);
+	}*/
+	
+	@PutMapping("/produto/edite/{id_Usuario}")
+	public ResponseEntity<?> editarProduto(
+			@PathVariable(value = "id_Usuario") Long idUsuario,
+			@Valid @RequestBody Produtos produto) {
+		Optional<Produtos> alterado = service.editarProduto(idUsuario, produto);
+		if(alterado.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Produto inexistente");
+		}else {
+			return ResponseEntity.status(HttpStatus.OK).body(alterado.get());
+		}
+	}
+	
+	/*@PutMapping("/produto/compra/{id_Produto}/{id_Usuario}")
+	public ResponseEntity<?> novaCompra(
+			@PathVariable(value = "id_Produto") Long idProduto,
+			@PathVariable(value = "id_Usuario") Long idUsuario,
+			@RequestParam(defaultValue = "") int qtdCompras) {
+		Usuarios compra = service.comprarProduto(idUsuario, idProduto, qtdCompras);
+		if(compra == null) {
+			return new ResponseEntity<String>("Produto ou usuário invalido", HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<Usuarios>(compra, HttpStatus.CREATED);
+	}
+	
+	@DeleteMapping("/produto/delete/{id_Produto}/{id_Usuario}")
+	public ResponseEntity<?> removerProduto(
+			@PathVariable(value = "id_Produto")Long idProduto,
+			@PathVariable(value = "id_Usuario")Long idUsuario){
+		Usuarios retorno = service.deletarProduto(idProduto, idUsuario);
+		if(retorno == null) {
+			return new ResponseEntity<String>("Produto ou usuário invalido", HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<Usuarios>(retorno, HttpStatus.ACCEPTED);
+	}*/
 }

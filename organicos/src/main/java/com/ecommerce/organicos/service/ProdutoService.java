@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ecommerce.organicos.model.CategoriaEnum;
 import com.ecommerce.organicos.model.Produtos;
 import com.ecommerce.organicos.repository.ProdutosRepository;
 
@@ -27,7 +28,17 @@ public class ProdutoService {
 		return repository.findAllByOrganico(organico);
 	}
 	
-	public Produtos postar(Produtos produtos) {
+	public List<Produtos> listarCategoriaProduto(CategoriaEnum categoriaDoProduto){
+		return repository.findByCategoriaDoProdutoContainingIgnoreCase(categoriaDoProduto);
+	}
+	
+		
+	public List<Produtos> buscarPorNome(String nome){
+		return repository.findAllByNomeContainingIgnoreCase(nome);
+	}
+	
+	/* Essa funcionalidade foi migrada para o usuarioService, pois o usuário posta, altera e deleta os produtos.
+	 * public Produtos postar(Produtos produtos) {
 		return repository.save(produtos);
 		
 	}
@@ -50,5 +61,5 @@ public class ProdutoService {
 		
 	public void deletar(Produtos produtos) {
 		repository.deleteById(produtos.getIdProduto());
-	}
+	}*/
 }
