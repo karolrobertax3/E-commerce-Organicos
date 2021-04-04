@@ -4,10 +4,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+
+import javax.persistence.CascadeType;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+
+import javax.persistence.FetchType;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -20,6 +26,8 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+
+import com.ecommerce.organicos.model.util.Categoria;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -50,26 +58,22 @@ public class Produtos {
 	
 	@NotNull
 	@Enumerated(EnumType.STRING)
-	private CategoriaEnum categoriaDoProduto;
+	private Categoria categoria;
 	
 	
 	@Column(name="Preço", columnDefinition="Decimal(5,2)")
 	private float preco;
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "criador")
 	@JsonIgnoreProperties({"meusProdutos", "minhasCompras"})
 	private Usuarios criadoPor;
 	
-	@ManyToMany(mappedBy = "minhasCompras")
+
+	@ManyToMany(mappedBy = "minhasCompras", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JsonIgnoreProperties("meusProdutos")
 	private List<Usuarios> compradoPor = new ArrayList<>();
 	
-	/*@ManyToOne
-	@JoinColumn(name="categoria_id")
-	private Categoria categoriaDoProduto;*/
-	
-
 	
 	public Produtos() {
 
@@ -129,13 +133,13 @@ public class Produtos {
 	public void setQtdCompras(int qtdCompras) {
 		this.qtdCompras = qtdCompras;
 	}
-
-	public CategoriaEnum getCategoriaDoProduto() {
-		return categoriaDoProduto;
+	public Categoria getCategoria() {
+		return categoria;
 	}
 
-	public void setCategoriaDoProduto(CategoriaEnum categoriaDoProduto) {
-		this.categoriaDoProduto = categoriaDoProduto;
+	public void setCategoria(Categoria categoria) {
+		this.categoria = categoria;
+
 	}
 
 	public Usuarios getCriadoPor() {
@@ -153,14 +157,4 @@ public class Produtos {
 	public void setCompradoPor(List<Usuarios> compradoPor) {
 		this.compradoPor = compradoPor;
 	}
-
-	/*public Categoria getCategoriaDoProduto() {
-		return categoriaDoProduto;
-	}
-
-	public void setCategoriaDoProduto(Categoria categoriaDoProduto) {
-		this.categoriaDoProduto = categoriaDoProduto;
-	}*/
-
 }
-

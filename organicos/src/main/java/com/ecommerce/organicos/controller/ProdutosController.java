@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ecommerce.organicos.model.Produtos;
+import com.ecommerce.organicos.model.util.Categoria;
 import com.ecommerce.organicos.repository.ProdutosRepository;
 import com.ecommerce.organicos.service.ProdutoService;
 
@@ -46,27 +47,14 @@ public class ProdutosController {
 		return new ResponseEntity <List<Produtos>> (service.listarOrganicos(organicos),HttpStatus.OK);
 	}
 	
-	/*Essa funcionalidade foi migrada para o usuarioController, pois o usuário posta, altera e deleta os produtos.
-	 * @PostMapping
-	public ResponseEntity <Produtos> postar(@RequestBody Produtos produtos){
-		return new ResponseEntity <Produtos> (service.postar(produtos),HttpStatus.CREATED);
-		
+	@GetMapping("/categoria")
+	public ResponseEntity<List<Produtos>> listarCategoria(@RequestParam(defaultValue = " ") Categoria categoria){
+		return new ResponseEntity<List<Produtos>> (service.listarCategoria(categoria),HttpStatus.OK);
 	}
-		
-	@PutMapping
-	public ResponseEntity<?> alterar(@RequestBody Produtos produtos){
-		Optional<Produtos> alterado = service.alterar(produtos);
-		if (alterado.isEmpty()) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Produto Inexistente");
-	    }	
-		else {
-			return ResponseEntity.status(HttpStatus.OK).body(alterado.get());
-		}
+	
+	@GetMapping("/nome/produto")
+	public ResponseEntity<List<Produtos>> buscarPorNome(@RequestParam(defaultValue = " ") String nome){
+		return new ResponseEntity<List<Produtos>> (service.buscarPorNome(nome),HttpStatus.OK);
 	}
-		
-	@DeleteMapping("/deletar/{idProduto}")
-	public void deletar(Produtos produtos) {
-		service.deletar(produtos);
-	}*/
 
 }

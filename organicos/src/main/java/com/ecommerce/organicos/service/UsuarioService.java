@@ -89,7 +89,7 @@ public class UsuarioService {
 			produtoExistente.get().setDataSafra(produto.getDataSafra());
 			produtoExistente.get().setDescricao(produto.getDescricao());
 			produtoExistente.get().setOrganico(produto.getOrganico());
-			produtoExistente.get().setCategoriaDoProduto(produto.getCategoriaDoProduto());
+			produtoExistente.get().setCategoria(produto.getCategoria());
 		}
 		return Optional.ofNullable(repositoryProdutos.save(produtoExistente.get()));
 	}
