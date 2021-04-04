@@ -70,7 +70,7 @@ public class UsuarioService {
 		repository.deleteById(usuarios.getIdUsuario());
 	}
 	
-	/*public Produtos cadastrarProduto(Produtos novoProduto, Long idUsuario) {
+	public Produtos cadastrarProduto(Produtos novoProduto, Long idUsuario) {
 		Produtos produtoExistente = repositoryProdutos.save(novoProduto);
 		Optional<Usuarios> usuarioExistente  = repository.findById(idUsuario);
 		if(usuarioExistente.isPresent()) {
@@ -78,7 +78,7 @@ public class UsuarioService {
 			return repositoryProdutos.save(produtoExistente);
 		}
 		return null;
-	}*/
+	}
 	
 	public Optional<Produtos> editarProduto(Long idUsuario, Produtos produto){
 		Optional<Produtos> produtoExistente = repositoryProdutos.findById(produto.getIdProduto());
@@ -89,12 +89,12 @@ public class UsuarioService {
 			produtoExistente.get().setDataSafra(produto.getDataSafra());
 			produtoExistente.get().setDescricao(produto.getDescricao());
 			produtoExistente.get().setOrganico(produto.getOrganico());
-			produtoExistente.get().setCategoriaDoProduto(produto.getCategoriaDoProduto());
+			produtoExistente.get().setCategoria(produto.getCategoria());
 		}
 		return Optional.ofNullable(repositoryProdutos.save(produtoExistente.get()));
 	}
 	
-	/*public Usuarios comprarProduto(Long idUsuario, Long idProduto, int qtdCompras) {
+	public Usuarios comprarProduto(Long idUsuario, Long idProduto, int qtdCompras) {
 		Optional<Usuarios> usuarioExistente = repository.findById(idUsuario);
 		Optional<Produtos> produtoExistente = repositoryProdutos.findById(idProduto);
 		if(usuarioExistente.get().getIdUsuario() != produtoExistente.get().getCriadoPor().getIdUsuario()) {
@@ -115,14 +115,14 @@ public class UsuarioService {
 			System.out.println("O usuário criador não pode comprar seu próprio produto");
 		}
 		return null;
-	}*/
+	}
 	
 	public Produtos estoque(Long idProduto) {
 		Optional<Produtos> produtoExistente = repositoryProdutos.findById(idProduto);
 		return repositoryProdutos.save(produtoExistente.get());
 	}
 	
-	/*public Usuarios deletarProduto(Long idProduto, Long idUsuario) {
+	public Usuarios deletarProduto(Long idProduto, Long idUsuario) {
 		Optional<Usuarios> usuarioExistente = repository.findById(idUsuario);
 		Optional<Produtos> produtoExistente = repositoryProdutos.findById(idProduto);
 		if(usuarioExistente.get().getIdUsuario() == produtoExistente.get().getCriadoPor().getIdUsuario()) {
@@ -137,5 +137,5 @@ public class UsuarioService {
 		}
 		
 		return null;
-	}*/
+	}
 }

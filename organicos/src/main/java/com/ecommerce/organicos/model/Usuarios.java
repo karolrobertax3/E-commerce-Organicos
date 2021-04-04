@@ -61,17 +61,17 @@ public class Usuarios {
 	
 	private float valorCompra;
 	
-	/*@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinTable(
 	  name = "compras", 
 	  joinColumns = @JoinColumn(name = "comprador_id"), 
 	  inverseJoinColumns = @JoinColumn(name = "produto_id"))
 	@JsonIgnoreProperties({"compradoPor", "qtdCompras"})
-	private List<Produtos> minhasCompras = new ArrayList<>();*/
+	private List<Produtos> minhasCompras = new ArrayList<>();
 	
-	/*@OneToMany(mappedBy = "criadoPor", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "criadoPor", cascade = CascadeType.ALL)
 	@JsonIgnoreProperties("criadoPor")
-	private List<Produtos> meusProdutos = new ArrayList<>();*/
+	private List<Produtos> meusProdutos = new ArrayList<>();
 
 	public Usuarios() {
 		
@@ -149,21 +149,21 @@ public class Usuarios {
 		this.valorCompra = valorCompra;
 	}
 
-	/*public List<Produtos> getMinhasCompras() {
+	public List<Produtos> getMinhasCompras() {
 		return minhasCompras;
 	}
 
 	public void setMinhasCompras(List<Produtos> minhasCompras) {
 		this.minhasCompras = minhasCompras;
-	}*/
+	}
 
-	/*public List<Produtos> getMeusProdutos() {
+	public List<Produtos> getMeusProdutos() {
 		return meusProdutos;
 	}
 
 	public void setMeusProdutos(List<Produtos> meusProdutos) {
 		this.meusProdutos = meusProdutos;
-	}*/
+	}
 	
 
 }

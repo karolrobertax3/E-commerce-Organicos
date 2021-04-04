@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ecommerce.organicos.model.CategoriaEnum;
 import com.ecommerce.organicos.model.Produtos;
+import com.ecommerce.organicos.model.util.Categoria;
 import com.ecommerce.organicos.repository.ProdutosRepository;
 import com.ecommerce.organicos.service.ProdutoService;
 
@@ -48,11 +48,11 @@ public class ProdutosController {
 	}
 	
 	@GetMapping("/categoria")
-	public ResponseEntity<List<Produtos>> listarCategoriaProduto(@RequestParam(defaultValue = " ") CategoriaEnum categoriaDoProduto){
-		return new ResponseEntity<List<Produtos>> (service.listarCategoriaProduto(categoriaDoProduto),HttpStatus.OK);
+	public ResponseEntity<List<Produtos>> listarCategoria(@RequestParam(defaultValue = " ") Categoria categoria){
+		return new ResponseEntity<List<Produtos>> (service.listarCategoria(categoria),HttpStatus.OK);
 	}
 	
-	@GetMapping("/nome")
+	@GetMapping("/nome/produto")
 	public ResponseEntity<List<Produtos>> buscarPorNome(@RequestParam(defaultValue = " ") String nome){
 		return new ResponseEntity<List<Produtos>> (service.buscarPorNome(nome),HttpStatus.OK);
 	}
