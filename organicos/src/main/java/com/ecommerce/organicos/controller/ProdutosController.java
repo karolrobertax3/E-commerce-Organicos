@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ecommerce.organicos.model.Produtos;
+import com.ecommerce.organicos.model.util.Categoria;
 import com.ecommerce.organicos.repository.ProdutosRepository;
 import com.ecommerce.organicos.service.ProdutoService;
 
@@ -45,6 +46,20 @@ public class ProdutosController {
 	public ResponseEntity <List<Produtos>> listarOrganicos(@RequestParam(defaultValue = "") boolean organicos){
 		return new ResponseEntity <List<Produtos>> (service.listarOrganicos(organicos),HttpStatus.OK);
 	}
+	
+	@GetMapping("/categoria")
+	public ResponseEntity<List<Produtos>> listarCategoria(@RequestParam(defaultValue = " ") Categoria categoria){
+		return new ResponseEntity<List<Produtos>> (service.listarCategoria(categoria),HttpStatus.OK);
+	}
+	
+	@GetMapping("/nome/produto")
+	public ResponseEntity<List<Produtos>> buscarPorNome(@RequestParam(defaultValue = " ") String nome){
+		return new ResponseEntity<List<Produtos>> (service.buscarPorNome(nome),HttpStatus.OK);
+	}
+	
+	
+	
+	
 	
 	/*Essa funcionalidade foi migrada para o usuarioController, pois o usuário posta, altera e deleta os produtos.
 	 * @PostMapping

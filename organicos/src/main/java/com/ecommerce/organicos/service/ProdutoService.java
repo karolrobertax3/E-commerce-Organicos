@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ecommerce.organicos.model.Produtos;
+import com.ecommerce.organicos.model.util.Categoria;
 import com.ecommerce.organicos.repository.ProdutosRepository;
 
 @Service
@@ -25,6 +26,15 @@ public class ProdutoService {
 	
 	public List<Produtos> listarOrganicos(boolean organico){
 		return repository.findAllByOrganico(organico);
+	}
+	
+	public List<Produtos> listarCategoria(Categoria categoria){
+		return repository.findByCategoria(categoria);
+	}
+	
+		
+	public List<Produtos> buscarPorNome(String nome){
+		return repository.findAllByNome(nome);
 	}
 	
 	/* Essa funcionalidade foi migrada para o usuarioService, pois o usuário posta, altera e deleta os produtos.

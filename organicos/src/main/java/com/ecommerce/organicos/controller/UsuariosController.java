@@ -82,9 +82,9 @@ public class UsuariosController {
 		service.deletar(usuarios);
 	}
 	
-	@PostMapping("/produto/novo/{id_Usuario}")
+	@PostMapping("/produto/novo/{id_usuario}")
 	public ResponseEntity<?> novoProduto(
-			@PathVariable(value = "id_Usuario") Long idUsuario,
+			@PathVariable(value = "id_usuario") Long idUsuario,
 			@Valid @RequestBody Produtos novoProduto) {
 		Produtos cadastro = service.cadastrarProduto(novoProduto, idUsuario);
 		if(cadastro == null) {
@@ -93,9 +93,9 @@ public class UsuariosController {
 		return new ResponseEntity<Produtos>(cadastro, HttpStatus.CREATED);
 	}
 	
-	@PutMapping("/produto/edite/{id_Usuario}")
+	@PutMapping("/produto/edite/{id_usuario}")
 	public ResponseEntity<?> editarProduto(
-			@PathVariable(value = "id_Usuario") Long idUsuario,
+			@PathVariable(value = "id_usuario") Long idUsuario,
 			@Valid @RequestBody Produtos produto) {
 		Optional<Produtos> alterado = service.editarProduto(idUsuario, produto);
 		if(alterado.isEmpty()) {
@@ -105,10 +105,10 @@ public class UsuariosController {
 		}
 	}
 	
-	@PutMapping("/produto/compra/{id_Produto}/{id_Usuario}")
+	@PutMapping("/produto/compra/{id_Produto}/{id_usuario}")
 	public ResponseEntity<?> novaCompra(
 			@PathVariable(value = "id_Produto") Long idProduto,
-			@PathVariable(value = "id_Usuario") Long idUsuario,
+			@PathVariable(value = "id_usuario") Long idUsuario,
 			@RequestParam(defaultValue = "") int qtdCompras) {
 		Usuarios compra = service.comprarProduto(idUsuario, idProduto, qtdCompras);
 		if(compra == null) {
@@ -117,10 +117,10 @@ public class UsuariosController {
 		return new ResponseEntity<Usuarios>(compra, HttpStatus.CREATED);
 	}
 	
-	@DeleteMapping("/produto/delete/{id_Produto}/{id_Usuario}")
+	@DeleteMapping("/produto/delete/{id_Produto}/{id_usuario}")
 	public ResponseEntity<?> removerProduto(
 			@PathVariable(value = "id_Produto")Long idProduto,
-			@PathVariable(value = "id_Usuario")Long idUsuario){
+			@PathVariable(value = "id_usuario")Long idUsuario){
 		Usuarios retorno = service.deletarProduto(idProduto, idUsuario);
 		if(retorno == null) {
 			return new ResponseEntity<String>("Produto ou usuário invalido", HttpStatus.NO_CONTENT);
