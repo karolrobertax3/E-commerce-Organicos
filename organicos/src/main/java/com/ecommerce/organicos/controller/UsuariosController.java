@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ecommerce.organicos.model.Produtos;
 import com.ecommerce.organicos.model.Usuarios;
-import com.ecommerce.organicos.repository.UsuariosRepository;
 import com.ecommerce.organicos.service.UsuarioService;
 
 @RestController
@@ -41,16 +40,17 @@ public class UsuariosController {
 	public ResponseEntity<Optional<Usuarios>> buscarPorId(@PathVariable Long id) {
 		return new ResponseEntity<Optional<Usuarios>>(service.buscarPorId(id), HttpStatus.OK);
 	}
-
-	@GetMapping("/produtores/{nome}")
-	public ResponseEntity<List<Usuarios>> getByName(@RequestParam(defaultValue = "") String nome) {
+	
+	
+	@GetMapping("/nome")
+	public ResponseEntity<List<Usuarios>> buscarPorNome(@RequestParam(defaultValue = "") String nome) {
 		return new ResponseEntity<List<Usuarios>>(service.buscarPorNome(nome), HttpStatus.OK);
 
 	}
 
-	@GetMapping("/produtores/{regiao}")
-	public ResponseEntity<List<Usuarios>> getByRegiao(@RequestParam(defaultValue = "") String regiao) {
-		return new ResponseEntity<List<Usuarios>>(service.buscarPorRegiao(regiao), HttpStatus.OK);
+	@GetMapping("/produtores/regiao")
+	public ResponseEntity<List<Usuarios>> buscarPorRegiao(@RequestParam(defaultValue = "") String endereco) {
+		return new ResponseEntity<List<Usuarios>>(service.buscarPorRegiao(endereco), HttpStatus.OK);
 	}
 
 	@PostMapping
@@ -78,8 +78,65 @@ public class UsuariosController {
 		}
 	}
 
-	@DeleteMapping("/deletar/{id}")
-	public void deletar(Usuarios usuarios) {
-		service.deletar(usuarios);
+	//NÃO ESTÁ FUNCIONANDO O ELSE
+	@DeleteMapping("/deletar/{idUsuario}")
+	public ResponseEntity<Object> deletar(@PathVariable Long idUsuario) {
+		Optional<Usuarios> retorno = service.buscarPorId(idUsuario);
+		if (retorno == null) {
+			return new ResponseEntity<Object>("Usuário não existe", HttpStatus.NO_CONTENT);
+		} else {
+			return new ResponseEntity<Object>(service.deletar(idUsuario),HttpStatus.OK);
+		}
 	}
+	
+	@PostMapping("/produto/novo/{id_usuario}")
+	public ResponseEntity<?> novoProduto(
+			@PathVariable(value = "id_usuario") Long idUsuario,
+			@Valid @RequestBody Produtos novoProduto) {
+		Produtos cadastro = service.cadastrarProduto(novoProduto, idUsuario);
+		if(cadastro == null) {
+			return new ResponseEntity<String>("Falha no cadastro", HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<Produtos>(cadastro, HttpStatus.CREATED);
+	}
+	
+	@PutMapping("/produto/edite/{id_usuario}")
+	public ResponseEntity<?> editarProduto(
+			@PathVariable(value = "id_usuario") Long idUsuario,
+			@Valid @RequestBody Produtos produto) {
+		Optional<Produtos> alterado = service.editarProduto(idUsuario, produto);
+		if(alterado.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Produto inexistente");
+		}else {
+			return ResponseEntity.status(HttpStatus.OK).body(alterado.get());
+		}
+	}
+	
+	@PutMapping("/produto/compra/{id_Produto}/{id_usuario}")
+	public ResponseEntity<?> novaCompra(
+			@PathVariable(value = "id_Produto") Long idProduto,
+			@PathVariable(value = "id_usuario") Long idUsuario,
+			@RequestParam(defaultValue = "") int qtdCompras) {
+		Usuarios compra = service.comprarProduto(idUsuario, idProduto, qtdCompras);
+		if(compra == null) {
+			return new ResponseEntity<String>("Produto ou usuário invalido", HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<Usuarios>(compra, HttpStatus.CREATED);
+	}
+	
+	@DeleteMapping("/produto/delete/{id_Produto}/{id_usuario}")
+	public ResponseEntity<?> removerProduto(
+			@PathVariable(value = "id_Produto")Long idProduto,
+			@PathVariable(value = "id_usuario")Long idUsuario){
+		Usuarios retorno = service.deletarProduto(idProduto, idUsuario);
+		if(retorno == null) {
+			return new ResponseEntity<String>("Produto ou usuário invalido", HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<Usuarios>(retorno, HttpStatus.ACCEPTED);
+	}
+	
+	/*@GetMapping("/vendas")
+	public ResponseEntity<Produtos> vendas (@PathVariable Long idProduto){
+		return ResponseEntity.status(HttpStatus.OK).body(service.vendas(idProduto));
+	}*/
 }

@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ecommerce.organicos.model.Produtos;
+import com.ecommerce.organicos.model.util.Categoria;
+import com.ecommerce.organicos.repository.ProdutosRepository;
 import com.ecommerce.organicos.service.ProdutoService;
 
 @RestController
@@ -45,22 +47,19 @@ public class ProdutosController {
 		return new ResponseEntity <List<Produtos>> (service.listarOrganicos(organicos),HttpStatus.OK);
 	}
 	
-	@PostMapping
-	public ResponseEntity <Produtos> postar(@RequestBody Produtos produtos){
-		return new ResponseEntity <Produtos> (service.postar(produtos),HttpStatus.CREATED);
-		
-	}
-		
-	@PutMapping
-	public ResponseEntity<?> alterar(@RequestBody Produtos produtos){
-		Optional<Produtos> alterado = service.alterar(produtos);
-		if (alterado.isEmpty()) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Produto Inexistente");
-	    }	
-		else {
-			return ResponseEntity.status(HttpStatus.OK).body(alterado.get());
-		}
+	@GetMapping("/categoria")
+	public ResponseEntity<List<Produtos>> listarCategoria(@RequestParam(defaultValue = " ") Categoria categoria){
+		return new ResponseEntity<List<Produtos>> (service.listarCategoria(categoria),HttpStatus.OK);
 	}
 	
+	@GetMapping("/nome/produto")
+	public ResponseEntity<List<Produtos>> buscarPorTitulo(@RequestParam(defaultValue = " ") String titulo){
+		return new ResponseEntity<List<Produtos>> (service.buscarPorTitulo(titulo),HttpStatus.OK);
+	}
+	
+	@GetMapping("/preco")
+	public ResponseEntity<List<Produtos>> preco(@RequestParam(defaultValue = " ") float preco1, float preco2){
+		return new ResponseEntity<List<Produtos>>(service.filtrarPorPreco(preco1, preco2),HttpStatus.OK);
+	}
+
 }
-	
