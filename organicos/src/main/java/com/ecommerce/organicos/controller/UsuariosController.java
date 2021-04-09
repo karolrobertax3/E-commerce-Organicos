@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ecommerce.organicos.model.Produtos;
 import com.ecommerce.organicos.model.Usuarios;
+import com.ecommerce.organicos.repository.ProdutosRepository;
+import com.ecommerce.organicos.repository.UsuariosRepository;
 import com.ecommerce.organicos.service.UsuarioService;
 
 @RestController
@@ -30,6 +32,12 @@ public class UsuariosController {
 
 	@Autowired
 	private UsuarioService service;
+	
+	@Autowired
+	private UsuariosRepository repository;
+	
+	@Autowired
+	private ProdutosRepository repositoryProduto;
 
 	@GetMapping
 	public ResponseEntity<List<Usuarios>> listarTodos() {
@@ -77,17 +85,6 @@ public class UsuariosController {
 			return ResponseEntity.status(HttpStatus.OK).body(alterado.get());
 		}
 	}
-
-	//NÃO ESTÁ FUNCIONANDO O ELSE
-	@DeleteMapping("/deletar/{idUsuario}")
-	public ResponseEntity<Object> deletar(@PathVariable Long idUsuario) {
-		Optional<Usuarios> retorno = service.buscarPorId(idUsuario);
-		if (retorno == null) {
-			return new ResponseEntity<Object>("Usuário não existe", HttpStatus.NO_CONTENT);
-		} else {
-			return new ResponseEntity<Object>(service.deletar(idUsuario),HttpStatus.OK);
-		}
-	}
 	
 	@PostMapping("/produto/novo/{id_usuario}")
 	public ResponseEntity<?> novoProduto(
@@ -117,11 +114,22 @@ public class UsuariosController {
 			@PathVariable(value = "id_Produto") Long idProduto,
 			@PathVariable(value = "id_usuario") Long idUsuario,
 			@RequestParam(defaultValue = "") int qtdCompras) {
-		Usuarios compra = service.comprarProduto(idUsuario, idProduto, qtdCompras);
-		if(compra == null) {
-			return new ResponseEntity<String>("Produto ou usuário invalido", HttpStatus.NO_CONTENT);
+		Optional<Usuarios> usuarioExistente = repository.findById(idUsuario);
+		Optional<Produtos> produtoExistente = repositoryProduto.findById(idProduto);
+		if(usuarioExistente.get().getIdUsuario() == produtoExistente.get().getCriadoPor().getIdUsuario()) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("O usuário criador não pode comprar seu próprio produto");
+		} else {
+			produtoExistente.get().setQtdEstoque(produtoExistente.get().getQtdEstoque()-qtdCompras);
+			if(produtoExistente.get().getQtdEstoque() >= produtoExistente.get().getQtdCompras()) {
+				Usuarios compra = service.comprarProduto(idUsuario, idProduto, qtdCompras);
+				if(compra == null) {
+					return new ResponseEntity<String>("Produto ou usuário inválido", HttpStatus.NO_CONTENT);
+				}
+				return new ResponseEntity<Usuarios>(compra,HttpStatus.CREATED);
+			} else {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Estoque insuficiente");
+			}
 		}
-		return new ResponseEntity<Usuarios>(compra, HttpStatus.CREATED);
 	}
 	
 	@DeleteMapping("/produto/delete/{id_Produto}/{id_usuario}")
@@ -134,9 +142,5 @@ public class UsuariosController {
 		}
 		return new ResponseEntity<Usuarios>(retorno, HttpStatus.ACCEPTED);
 	}
-	
-	/*@GetMapping("/vendas")
-	public ResponseEntity<Produtos> vendas (@PathVariable Long idProduto){
-		return ResponseEntity.status(HttpStatus.OK).body(service.vendas(idProduto));
-	}*/
+
 }
