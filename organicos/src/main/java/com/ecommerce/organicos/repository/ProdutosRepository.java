@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.ecommerce.organicos.model.Produtos;
-import com.ecommerce.organicos.model.util.Categoria;
+//import com.ecommerce.organicos.model.util.Categoria;
 
 @Repository
 public interface ProdutosRepository extends JpaRepository<Produtos, Long> {
@@ -18,7 +18,7 @@ public interface ProdutosRepository extends JpaRepository<Produtos, Long> {
 	
 	public List<Produtos> findByDataSafra (Date data);
 	
-	public List<Produtos> findByCategoria(Categoria categoria);
+	//public List<Produtos> findByCategoria(Categoria categoria);
 	
 	public List<Produtos> findAllByTituloContainingIgnoreCase(String titulo);
 	

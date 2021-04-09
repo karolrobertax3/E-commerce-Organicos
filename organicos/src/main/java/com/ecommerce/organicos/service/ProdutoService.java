@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ecommerce.organicos.model.Produtos;
-import com.ecommerce.organicos.model.util.Categoria;
+//import com.ecommerce.organicos.model.util.Categoria;
 import com.ecommerce.organicos.repository.ProdutosRepository;
 
 @Service
@@ -27,11 +27,11 @@ public class ProdutoService {
 	public List<Produtos> listarOrganicos(boolean organico){
 		return repository.findAllByOrganico(organico);
 	}
-	
-	public List<Produtos> listarCategoria(Categoria categoria){
-		return repository.findByCategoria(categoria);
-	}
-	
+	/*
+	 *public List<Produtos> listarCategoria(Categoria categoria){
+	 *	return repository.findByCategoria(categoria);
+	 *}
+	 */
 		
 	public List<Produtos> buscarPorTitulo(String titulo){
 		return repository.findAllByTituloContainingIgnoreCase(titulo);

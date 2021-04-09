@@ -27,7 +27,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 
-import com.ecommerce.organicos.model.util.Categoria;
+//import com.ecommerce.organicos.model.util.Categoria;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -59,7 +59,7 @@ public class Produtos {
 	
 	@NotNull
 	@Enumerated(EnumType.STRING)
-	private Categoria categoria;
+	//private Categoria categoria;
 	
 	
 	@Column(name="Preço", columnDefinition="Decimal(5,2)")
@@ -127,15 +127,15 @@ public class Produtos {
 		this.qtdEstoque = qtdEstoque;
 	}
 
-
+   /*
 	public Categoria getCategoria() {
 		return categoria;
 	}
 
 	public void setCategoria(Categoria categoria) {
 		this.categoria = categoria;
-
 	}
+	*/
 
 	public Usuarios getCriadoPor() {
 		return criadoPor;

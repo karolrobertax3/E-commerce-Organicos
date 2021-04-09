@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ecommerce.organicos.model.Produtos;
-import com.ecommerce.organicos.model.util.Categoria;
+//import com.ecommerce.organicos.model.util.Categoria;
 import com.ecommerce.organicos.repository.ProdutosRepository;
 import com.ecommerce.organicos.service.ProdutoService;
 
@@ -47,11 +47,12 @@ public class ProdutosController {
 		return new ResponseEntity <List<Produtos>> (service.listarOrganicos(organicos),HttpStatus.OK);
 	}
 	
+	/*
 	@GetMapping("/categoria")
 	public ResponseEntity<List<Produtos>> listarCategoria(@RequestParam(defaultValue = " ") Categoria categoria){
 		return new ResponseEntity<List<Produtos>> (service.listarCategoria(categoria),HttpStatus.OK);
 	}
-	
+	*/
 	@GetMapping("/nome/produto")
 	public ResponseEntity<List<Produtos>> buscarPorTitulo(@RequestParam(defaultValue = " ") String titulo){
 		return new ResponseEntity<List<Produtos>> (service.buscarPorTitulo(titulo),HttpStatus.OK);
