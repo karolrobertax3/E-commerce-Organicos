@@ -47,13 +47,5 @@ public class ProdutoService {
 		}
 		   return Optional.ofNullable(repository.save(existente.get()));
 	}	
-		
-	public void deletar(Produtos produtos) {
-		repository.deleteById(produtos.getIdProduto());
-<<<<<<< HEAD
-	
-}
-=======
-	}
->>>>>>> edb0057b8a3d66f1a261f7da43a8aac4dee65865
-}
+}	
+
