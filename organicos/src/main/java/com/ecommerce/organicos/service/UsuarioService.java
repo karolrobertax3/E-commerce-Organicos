@@ -28,16 +28,20 @@ public class UsuarioService {
 	
 	public Optional<Usuarios> buscarPorId(Long id){
 		return repository.findById(id);
+		
 	}
 	public List<Usuarios> buscarPorNome (String nome){
 		return repository.findAllByNomeContainingIgnoreCase(nome);
 	}
+	
 	public List<Usuarios> buscarPorRegiao (String regiao){
 		return repository.findAllByEnderecoContainingIgnoreCase(regiao);
 	}
+	
 	public Usuarios postar(Usuarios usuarios) {
 		return repository.save(usuarios);	
 	}
+	
 	public Optional<Usuarios> alterar (Usuarios usuarios) {
 		Optional<Usuarios> existente = repository.findById(usuarios.getIdUsuario());
 		if (existente.isEmpty()) {
@@ -66,8 +70,13 @@ public class UsuarioService {
 		return Optional.ofNullable(repository.save(existente.get()));
 	}
 	
-	public void deletar (Usuarios usuarios) {
-		repository.deleteById(usuarios.getIdUsuario());
+	public Usuarios deletar (long idUsuario) {
+		Optional<Usuarios> usuarioExistente = repository.findById(idUsuario);
+		if (usuarioExistente.isPresent()) {
+			usuarioExistente.get().getIdUsuario().compareTo(idUsuario);
+			repository.deleteById(usuarioExistente.get().getIdUsuario());
+			}
+		return null;
 	}
 	
 	public Produtos cadastrarProduto(Produtos novoProduto, Long idUsuario) {
@@ -84,15 +93,17 @@ public class UsuarioService {
 		Optional<Produtos> produtoExistente = repositoryProdutos.findById(produto.getIdProduto());
 		Optional<Usuarios> usuarioExistente = repository.findById(idUsuario);
 		if(usuarioExistente.isPresent() && produtoExistente.isPresent()) {
-			produtoExistente.get().setNome(produto.getNome());
+			produtoExistente.get().setTitulo(produto.getTitulo());
 			produtoExistente.get().setPreco(produto.getPreco());
 			produtoExistente.get().setDataSafra(produto.getDataSafra());
 			produtoExistente.get().setDescricao(produto.getDescricao());
 			produtoExistente.get().setOrganico(produto.getOrganico());
 			produtoExistente.get().setCategoria(produto.getCategoria());
+			produtoExistente.get().setQtdEstoque(produto.getQtdEstoque());
 		}
 		return Optional.ofNullable(repositoryProdutos.save(produtoExistente.get()));
 	}
+	
 	
 	public Usuarios comprarProduto(Long idUsuario, Long idProduto, int qtdCompras) {
 		Optional<Usuarios> usuarioExistente = repository.findById(idUsuario);
@@ -103,7 +114,7 @@ public class UsuarioService {
 				if(usuarioExistente.isPresent() && produtoExistente.isPresent()) {
 					usuarioExistente.get().getMinhasCompras().add(produtoExistente.get());
 					usuarioExistente.get().setValorCompra(produtoExistente.get().getPreco() * qtdCompras);
-					this.estoque(idProduto);
+					//this.vendas(idProduto);
 					return repository.save(usuarioExistente.get());
 				}
 				return null;
@@ -117,18 +128,18 @@ public class UsuarioService {
 		return null;
 	}
 	
-	public Produtos estoque(Long idProduto) {
+	/*public Produtos vendas(Long idProduto) {
 		Optional<Produtos> produtoExistente = repositoryProdutos.findById(idProduto);
 		return repositoryProdutos.save(produtoExistente.get());
-	}
+	}*/
 	
 	public Usuarios deletarProduto(Long idProduto, Long idUsuario) {
 		Optional<Usuarios> usuarioExistente = repository.findById(idUsuario);
 		Optional<Produtos> produtoExistente = repositoryProdutos.findById(idProduto);
 		if(usuarioExistente.get().getIdUsuario() == produtoExistente.get().getCriadoPor().getIdUsuario()) {
 			if(usuarioExistente.isPresent() && produtoExistente.isPresent()) {
-				produtoExistente.get().setCriadoPor(null);
-				repositoryProdutos.save(produtoExistente.get());
+				//produtoExistente.get().setCriadoPor(null);
+				//repositoryProdutos.save(produtoExistente.get());
 				repositoryProdutos.deleteById(produtoExistente.get().getIdProduto());
 				return repository.findById(usuarioExistente.get().getIdUsuario()).get();
 			}

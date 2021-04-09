@@ -53,8 +53,13 @@ public class ProdutosController {
 	}
 	
 	@GetMapping("/nome/produto")
-	public ResponseEntity<List<Produtos>> buscarPorNome(@RequestParam(defaultValue = " ") String nome){
-		return new ResponseEntity<List<Produtos>> (service.buscarPorNome(nome),HttpStatus.OK);
+	public ResponseEntity<List<Produtos>> buscarPorTitulo(@RequestParam(defaultValue = " ") String titulo){
+		return new ResponseEntity<List<Produtos>> (service.buscarPorTitulo(titulo),HttpStatus.OK);
+	}
+	
+	@GetMapping("/preco")
+	public ResponseEntity<List<Produtos>> preco(@RequestParam(defaultValue = " ") float preco1, float preco2){
+		return new ResponseEntity<List<Produtos>>(service.filtrarPorPreco(preco1, preco2),HttpStatus.OK);
 	}
 
 }

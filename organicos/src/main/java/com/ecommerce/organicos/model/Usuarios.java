@@ -58,10 +58,11 @@ public class Usuarios {
 	@NotNull
 	@Size(min = 8)
 	private String senha;
-	
+		
 	private float valorCompra;
 	
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(
 	  name = "compras", 
 	  joinColumns = @JoinColumn(name = "comprador_id"), 
@@ -69,7 +70,8 @@ public class Usuarios {
 	@JsonIgnoreProperties({"compradoPor", "qtdCompras"})
 	private List<Produtos> minhasCompras = new ArrayList<>();
 	
-	@OneToMany(mappedBy = "criadoPor", cascade = CascadeType.ALL)
+	
+	@OneToMany(mappedBy = "criadoPor")
 	@JsonIgnoreProperties("criadoPor")
 	private List<Produtos> meusProdutos = new ArrayList<>();
 
@@ -164,6 +166,5 @@ public class Usuarios {
 	public void setMeusProdutos(List<Produtos> meusProdutos) {
 		this.meusProdutos = meusProdutos;
 	}
-	
 
 }

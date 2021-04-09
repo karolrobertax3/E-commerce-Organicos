@@ -33,8 +33,12 @@ public class ProdutoService {
 	}
 	
 		
-	public List<Produtos> buscarPorNome(String nome){
-		return repository.findAllByNome(nome);
+	public List<Produtos> buscarPorTitulo(String titulo){
+		return repository.findAllByTituloContainingIgnoreCase(titulo);
+	}
+	
+	public List<Produtos> filtrarPorPreco(float preco1, float preco2){
+		return repository.findByPrecoBetween(preco1, preco2);
 	}
 	
 }
