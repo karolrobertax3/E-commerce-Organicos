@@ -70,15 +70,6 @@ public class UsuarioService {
 		return Optional.ofNullable(repository.save(existente.get()));
 	}
 	
-	public Usuarios deletar (long idUsuario) {
-		Optional<Usuarios> usuarioExistente = repository.findById(idUsuario);
-		if (usuarioExistente.isPresent()) {
-			usuarioExistente.get().getIdUsuario().compareTo(idUsuario);
-			repository.deleteById(usuarioExistente.get().getIdUsuario());
-			}
-		return null;
-	}
-	
 	public Produtos cadastrarProduto(Produtos novoProduto, Long idUsuario) {
 		Produtos produtoExistente = repositoryProdutos.save(novoProduto);
 		Optional<Usuarios> usuarioExistente  = repository.findById(idUsuario);
@@ -108,30 +99,13 @@ public class UsuarioService {
 	public Usuarios comprarProduto(Long idUsuario, Long idProduto, int qtdCompras) {
 		Optional<Usuarios> usuarioExistente = repository.findById(idUsuario);
 		Optional<Produtos> produtoExistente = repositoryProdutos.findById(idProduto);
-		if(usuarioExistente.get().getIdUsuario() != produtoExistente.get().getCriadoPor().getIdUsuario()) {
-			produtoExistente.get().setQtdEstoque(produtoExistente.get().getQtdEstoque()-qtdCompras);
-			if(produtoExistente.get().getQtdEstoque() >= produtoExistente.get().getQtdCompras()) {
-				if(usuarioExistente.isPresent() && produtoExistente.isPresent()) {
-					usuarioExistente.get().getMinhasCompras().add(produtoExistente.get());
-					usuarioExistente.get().setValorCompra(produtoExistente.get().getPreco() * qtdCompras);
-					//this.vendas(idProduto);
-					return repository.save(usuarioExistente.get());
-				}
-				return null;
-			}else {
-				System.out.println("Estoque insuficiente");
+			if(usuarioExistente.isPresent() && produtoExistente.isPresent()) {
+				usuarioExistente.get().getMinhasCompras().add(produtoExistente.get());
+				usuarioExistente.get().setValorCompra(produtoExistente.get().getPreco()*qtdCompras);
+				return repository.save(usuarioExistente.get());
 			}
 			return null;
-		}else {
-			System.out.println("O usuário criador não pode comprar seu próprio produto");
-		}
-		return null;
 	}
-	
-	/*public Produtos vendas(Long idProduto) {
-		Optional<Produtos> produtoExistente = repositoryProdutos.findById(idProduto);
-		return repositoryProdutos.save(produtoExistente.get());
-	}*/
 	
 	public Usuarios deletarProduto(Long idProduto, Long idUsuario) {
 		Optional<Usuarios> usuarioExistente = repository.findById(idUsuario);
