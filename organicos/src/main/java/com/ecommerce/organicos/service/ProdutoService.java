@@ -33,33 +33,13 @@ public class ProdutoService {
 	}
 	
 		
-	public List<Produtos> buscarPorNome(String nome){
-		return repository.findAllByNome(nome);
+	public List<Produtos> buscarPorTitulo(String titulo){
+		return repository.findAllByTituloContainingIgnoreCase(titulo);
 	}
 	
-	/* Essa funcionalidade foi migrada para o usuarioService, pois o usuário posta, altera e deleta os produtos.
-	 * public Produtos postar(Produtos produtos) {
-		return repository.save(produtos);
-		
+	public List<Produtos> filtrarPorPreco(float preco1, float preco2){
+		return repository.findByPrecoBetween(preco1, preco2);
 	}
 	
-	public Optional<Produtos> alterar(Produtos produtos) {
-		Optional<Produtos> existente = repository.findById(produtos.getIdProduto());
-		if (existente.isEmpty()) {
-			return Optional.empty();
-		}
-		else {
-			existente.get().setCategoriaDoProduto(produtos.getCategoriaDoProduto());
-			existente.get().setDataSafra(produtos.getDataSafra());
-			existente.get().setDescricao(produtos.getDescricao());
-			existente.get().setNome(produtos.getNome());
-			existente.get().setOrganico(produtos.getOrganico());
-			existente.get().setPreco(produtos.getPreco());
-		}
-		   return Optional.ofNullable(repository.save(existente.get()));
-	}	
-		
-	public void deletar(Produtos produtos) {
-		repository.deleteById(produtos.getIdProduto());
-	}*/
 }
+

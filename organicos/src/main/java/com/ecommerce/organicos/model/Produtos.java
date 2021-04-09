@@ -4,12 +4,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+
 import javax.persistence.CascadeType;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+
 import javax.persistence.FetchType;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,6 +25,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
 
 import com.ecommerce.organicos.model.util.Categoria;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -39,7 +44,7 @@ public class Produtos {
 	
 	@NotNull
 	@Size(min = 5, max = 30)
-	private String nome;
+	private String titulo;
 	
 	@Size(max = 250)
 	private String descricao;
@@ -47,6 +52,7 @@ public class Produtos {
 	@NotNull
 	private boolean organico;
 	
+	@NotNull
 	private int qtdEstoque;
 	
 	private int qtdCompras;
@@ -59,16 +65,16 @@ public class Produtos {
 	@Column(name="Preço", columnDefinition="Decimal(5,2)")
 	private float preco;
 	
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
 	@JoinColumn(name = "criador")
 	@JsonIgnoreProperties({"meusProdutos", "minhasCompras"})
 	private Usuarios criadoPor;
 	
-	@ManyToMany(mappedBy = "minhasCompras", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JsonIgnoreProperties("meusProdutos")
+	
+	@ManyToMany(mappedBy = "minhasCompras", cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+	@JsonIgnoreProperties({"meusProdutos", "minhasCompras"})
 	private List<Usuarios> compradoPor = new ArrayList<>();
 	
-
 	
 	public Produtos() {
 
@@ -86,11 +92,11 @@ public class Produtos {
 	public void setDataSafra(Date dataSafra) {
 		this.dataSafra = dataSafra;
 	}
-	public String getNome() {
-		return nome;
+	public String getTitulo() {
+		return titulo;
 	}
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
 	}
 	public String getDescricao() {
 		return descricao;
@@ -121,13 +127,6 @@ public class Produtos {
 		this.qtdEstoque = qtdEstoque;
 	}
 
-	public int getQtdCompras() {
-		return qtdCompras;
-	}
-
-	public void setQtdCompras(int qtdCompras) {
-		this.qtdCompras = qtdCompras;
-	}
 
 	public Categoria getCategoria() {
 		return categoria;
@@ -135,6 +134,7 @@ public class Produtos {
 
 	public void setCategoria(Categoria categoria) {
 		this.categoria = categoria;
+
 	}
 
 	public Usuarios getCriadoPor() {
@@ -152,7 +152,11 @@ public class Produtos {
 	public void setCompradoPor(List<Usuarios> compradoPor) {
 		this.compradoPor = compradoPor;
 	}
+	public int getQtdCompras() {
+		return qtdCompras;
+	}
 
-	
-
+	public void setQtdCompras(int qtdCompras) {
+		this.qtdCompras = qtdCompras;
+	}	
 }

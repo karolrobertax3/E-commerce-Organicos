@@ -40,16 +40,17 @@ public class UsuariosController {
 	public ResponseEntity<Optional<Usuarios>> buscarPorId(@PathVariable Long id) {
 		return new ResponseEntity<Optional<Usuarios>>(service.buscarPorId(id), HttpStatus.OK);
 	}
-
-	@GetMapping("/produtores/{nome}")
-	public ResponseEntity<List<Usuarios>> getByName(@RequestParam(defaultValue = "") String nome) {
+	
+	
+	@GetMapping("/nome")
+	public ResponseEntity<List<Usuarios>> buscarPorNome(@RequestParam(defaultValue = "") String nome) {
 		return new ResponseEntity<List<Usuarios>>(service.buscarPorNome(nome), HttpStatus.OK);
 
 	}
 
-	@GetMapping("/produtores/{regiao}")
-	public ResponseEntity<List<Usuarios>> getByRegiao(@RequestParam(defaultValue = "") String regiao) {
-		return new ResponseEntity<List<Usuarios>>(service.buscarPorRegiao(regiao), HttpStatus.OK);
+	@GetMapping("/produtores/regiao")
+	public ResponseEntity<List<Usuarios>> buscarPorRegiao(@RequestParam(defaultValue = "") String endereco) {
+		return new ResponseEntity<List<Usuarios>>(service.buscarPorRegiao(endereco), HttpStatus.OK);
 	}
 
 	@PostMapping
@@ -77,9 +78,15 @@ public class UsuariosController {
 		}
 	}
 
-	@DeleteMapping("/deletar/{id}")
-	public void deletar(Usuarios usuarios) {
-		service.deletar(usuarios);
+	//NÃO ESTÁ FUNCIONANDO O ELSE
+	@DeleteMapping("/deletar/{idUsuario}")
+	public ResponseEntity<Object> deletar(@PathVariable Long idUsuario) {
+		Optional<Usuarios> retorno = service.buscarPorId(idUsuario);
+		if (retorno == null) {
+			return new ResponseEntity<Object>("Usuário não existe", HttpStatus.NO_CONTENT);
+		} else {
+			return new ResponseEntity<Object>(service.deletar(idUsuario),HttpStatus.OK);
+		}
 	}
 	
 	@PostMapping("/produto/novo/{id_usuario}")
@@ -127,4 +134,9 @@ public class UsuariosController {
 		}
 		return new ResponseEntity<Usuarios>(retorno, HttpStatus.ACCEPTED);
 	}
+	
+	/*@GetMapping("/vendas")
+	public ResponseEntity<Produtos> vendas (@PathVariable Long idProduto){
+		return ResponseEntity.status(HttpStatus.OK).body(service.vendas(idProduto));
+	}*/
 }

@@ -2,6 +2,6 @@ package com.ecommerce.organicos.model.util;
 
 public enum Categoria {
 	
-	FRUTAS,VERDURAS, LEGUMES, HORTALIÇAS, OUTROS
+	FRUTAS, VERDURAS, LEGUMES, HORTALIÇAS, OUTROS
 
 }

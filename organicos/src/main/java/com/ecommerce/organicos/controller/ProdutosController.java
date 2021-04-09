@@ -53,35 +53,13 @@ public class ProdutosController {
 	}
 	
 	@GetMapping("/nome/produto")
-	public ResponseEntity<List<Produtos>> buscarPorNome(@RequestParam(defaultValue = " ") String nome){
-		return new ResponseEntity<List<Produtos>> (service.buscarPorNome(nome),HttpStatus.OK);
+	public ResponseEntity<List<Produtos>> buscarPorTitulo(@RequestParam(defaultValue = " ") String titulo){
+		return new ResponseEntity<List<Produtos>> (service.buscarPorTitulo(titulo),HttpStatus.OK);
 	}
 	
-	
-	
-	
-	
-	/*Essa funcionalidade foi migrada para o usuarioController, pois o usuário posta, altera e deleta os produtos.
-	 * @PostMapping
-	public ResponseEntity <Produtos> postar(@RequestBody Produtos produtos){
-		return new ResponseEntity <Produtos> (service.postar(produtos),HttpStatus.CREATED);
-		
+	@GetMapping("/preco")
+	public ResponseEntity<List<Produtos>> preco(@RequestParam(defaultValue = " ") float preco1, float preco2){
+		return new ResponseEntity<List<Produtos>>(service.filtrarPorPreco(preco1, preco2),HttpStatus.OK);
 	}
-		
-	@PutMapping
-	public ResponseEntity<?> alterar(@RequestBody Produtos produtos){
-		Optional<Produtos> alterado = service.alterar(produtos);
-		if (alterado.isEmpty()) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Produto Inexistente");
-	    }	
-		else {
-			return ResponseEntity.status(HttpStatus.OK).body(alterado.get());
-		}
-	}
-		
-	@DeleteMapping("/deletar/{idProduto}")
-	public void deletar(Produtos produtos) {
-		service.deletar(produtos);
-	}*/
-	
+
 }
