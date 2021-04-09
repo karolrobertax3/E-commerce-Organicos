@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ecommerce.organicos.model.Produtos;
+import com.ecommerce.organicos.model.UsuarioLogin;
 import com.ecommerce.organicos.model.Usuarios;
 import com.ecommerce.organicos.repository.ProdutosRepository;
 import com.ecommerce.organicos.repository.UsuariosRepository;
@@ -38,7 +39,25 @@ public class UsuariosController {
 	
 	@Autowired
 	private ProdutosRepository repositoryProduto;
+	
+	@PostMapping("/cadastrar")
+    public ResponseEntity<Object> cadastro(@Valid @RequestBody Usuarios usuario) {
+        Optional<Usuarios> usuarioCadastrado = service.cadastrar(usuario);
+        if(usuarioCadastrado.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT).body("Usuário existente");
+        } else {
+            return ResponseEntity.status(HttpStatus.CREATED).body(usuarioCadastrado.get());
+        }
 
+    }
+	
+	@PostMapping("/logar")
+	public ResponseEntity<UsuarioLogin> auth(@RequestBody Optional<UsuarioLogin> usuarioLogin)  {
+		return service.logar(usuarioLogin)
+				.map(email -> ResponseEntity.ok(email))
+				.orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
+	}
+	
 	@GetMapping
 	public ResponseEntity<List<Usuarios>> listarTodos() {
 		return new ResponseEntity<List<Usuarios>>(service.listarTodos(), HttpStatus.OK);
@@ -61,11 +80,6 @@ public class UsuariosController {
 		return new ResponseEntity<List<Usuarios>>(service.buscarPorRegiao(endereco), HttpStatus.OK);
 	}
 
-	@PostMapping
-	public ResponseEntity<Usuarios> postar(@RequestBody Usuarios usuarios) {
-		return new ResponseEntity<Usuarios>(service.postar(usuarios), HttpStatus.CREATED);
-	}
-
 	@PutMapping
 	public ResponseEntity<?> alterar(@RequestBody Usuarios usuarios) {
 		Optional<Usuarios> alterado = service.alterar(usuarios);
@@ -76,9 +90,10 @@ public class UsuariosController {
 		}
 	}
 
+	// OLHAR AQUI
 	@PutMapping("/alterar/login")
 	public ResponseEntity<?> alterarLogin(@RequestBody Usuarios usuarios) {
-		Optional<Usuarios> alterado = service.alterarLogin(usuarios);
+		Optional<Usuarios> alterado = service.alterarSenha(usuarios);
 		if (alterado.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário Inexistente");
 		} else {

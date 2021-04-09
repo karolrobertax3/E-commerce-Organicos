@@ -28,10 +28,10 @@ public class ProdutoService {
 		return repository.findAllByOrganico(organico);
 	}
 	
-	public List<Produtos> listarCategoria(Categoria categoria){
-		return repository.findByCategoria(categoria);
-	}
-	
+	 public List<Produtos> listarCategoria(Categoria categoria){
+	 	return repository.findByCategoria(categoria);
+	 }
+
 		
 	public List<Produtos> buscarPorTitulo(String titulo){
 		return repository.findAllByTituloContainingIgnoreCase(titulo);
@@ -42,4 +42,3 @@ public class ProdutoService {
 	}
 	
 }
-

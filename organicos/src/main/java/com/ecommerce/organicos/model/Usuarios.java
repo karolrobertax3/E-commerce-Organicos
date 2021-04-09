@@ -3,7 +3,6 @@ package com.ecommerce.organicos.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -15,7 +14,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -28,35 +26,24 @@ public class Usuarios {
 	private Long idUsuario;
 	
 	@NotNull
-	@Size(min = 10, max = 50)
 	private String nome;
 	
 	@NotNull
-	@Size(min = 10, max = 60)
 	private String razaoSocial;
 	
 	@NotNull
-	@Size(min = 11, max = 14)
-	private String cpf;
+	private String cpfCnpj;
 	
 	@NotNull
-	@Size(min = 14, max = 18)
-	private String cnpj;
-	
-	@NotNull
-	@Size(min = 10, max = 50)
 	private String email;
 	
 	@NotNull
-	@Size(min = 11, max = 15)
 	private String telefone;
 	
 	@NotNull
-	@Size(min = 8, max = 100)
 	private String endereco;
 	
 	@NotNull
-	@Size(min = 8)
 	private String senha;
 		
 	private float valorCompra;
@@ -101,21 +88,13 @@ public class Usuarios {
 	public void setRazaoSocial(String razaoSocial) {
 		this.razaoSocial = razaoSocial;
 	}
-
-	public String getCpf() {
-		return cpf;
+	
+	public String getCpfCnpj() {
+		return cpfCnpj;
 	}
 
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
-	}
-
-	public String getCnpj() {
-		return cnpj;
-	}
-
-	public void setCnpj(String cnpj) {
-		this.cnpj = cnpj;
+	public void setCpfCnpj(String cpfCnpj) {
+		this.cpfCnpj = cpfCnpj;
 	}
 
 	public String getEmail() {
