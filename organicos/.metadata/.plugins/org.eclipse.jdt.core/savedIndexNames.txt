@@ -1,0 +1,2 @@
+INDEX VERSION 1.131+C:\Users\karol\OneDrive\Área de Trabalho\Projeto_ecommerce\organicos\.metadata\.plugins\org.eclipse.jdt.core
+2707434382.index
