@@ -1,14 +1,15 @@
 package com.ecommerce.organicos.service;
 
+import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-
 import com.ecommerce.organicos.model.Produtos;
+import com.ecommerce.organicos.model.UsuarioLogin;
 import com.ecommerce.organicos.model.Usuarios;
 import com.ecommerce.organicos.repository.ProdutosRepository;
 import com.ecommerce.organicos.repository.UsuariosRepository;
@@ -21,6 +22,39 @@ public class UsuarioService {
 	
 	@Autowired
 	public ProdutosRepository repositoryProdutos;
+	
+	public Optional<Usuarios> cadastrar(Usuarios usuario) {
+        Optional<Usuarios> usuarioExistente = repository.findByEmail(usuario.getEmail());
+        if(usuarioExistente.isPresent()) {
+            return Optional.empty();
+        }
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
+        String senhaEncoder = encoder.encode(usuario.getSenha());
+        usuario.setSenha(senhaEncoder);
+
+        return Optional.ofNullable(repository.save(usuario));
+    }
+	
+	public Optional<UsuarioLogin> logar(Optional<UsuarioLogin> usuarioLogin){
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		Optional<Usuarios> usuarioPresente = repository.findByEmail(usuarioLogin.get().getEmail());
+
+		if(usuarioPresente.isPresent()) {
+			if(encoder.matches(usuarioLogin.get().getSenha(), usuarioPresente.get().getSenha())) {
+				String auth = usuarioLogin.get().getEmail() + ":" + usuarioLogin.get().getSenha();
+				byte[] encodedAuth = Base64.encodeBase64(auth.getBytes(Charset.forName("US-ASCII")));
+				String authHeader = "Basic " + new String(encodedAuth);
+				
+				usuarioLogin.get().setToken(authHeader);				
+				usuarioLogin.get().setNome(usuarioPresente.get().getNome());
+				usuarioLogin.get().setSenha(usuarioPresente.get().getSenha());
+
+				return usuarioLogin;
+			}
+		}
+		return null;
+	}
 	
 	public List<Usuarios> listarTodos(){
 		return repository.findAll();
@@ -38,10 +72,6 @@ public class UsuarioService {
 		return repository.findAllByEnderecoContainingIgnoreCase(regiao);
 	}
 	
-	public Usuarios postar(Usuarios usuarios) {
-		return repository.save(usuarios);	
-	}
-	
 	public Optional<Usuarios> alterar (Usuarios usuarios) {
 		Optional<Usuarios> existente = repository.findById(usuarios.getIdUsuario());
 		if (existente.isEmpty()) {
@@ -50,24 +80,26 @@ public class UsuarioService {
 		else {
 			existente.get().setRazaoSocial(usuarios.getRazaoSocial());
 			existente.get().setNome(usuarios.getNome());
-			existente.get().setCnpj(usuarios.getCnpj());
-			existente.get().setCpf(usuarios.getCpf());
+			existente.get().setCpfCnpj(usuarios.getCpfCnpj());
 			existente.get().setEndereco(usuarios.getEndereco());
 			existente.get().setTelefone(usuarios.getTelefone());
 		}
 		return Optional.ofNullable(repository.save(existente.get()));
 	}
 	
-	public Optional<Usuarios> alterarLogin(Usuarios usuarios) {
-		Optional<Usuarios> existente = repository.findById(usuarios.getIdUsuario());
+	public Optional<Usuarios> alterarSenha(Usuarios usuarios) {
+		Optional<Usuarios> existente = repository.findByEmail(usuarios.getEmail());
 		if (existente.isEmpty()) {
 			return Optional.empty();
 		}
 		else {
-			existente.get().setEmail(usuarios.getEmail());
-			existente.get().setSenha(usuarios.getSenha());
+			BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
+	        String senhaEncoder = encoder.encode(usuarios.getSenha());
+			existente.get().setSenha(senhaEncoder);
+			return Optional.ofNullable(repository.save(existente.get()));
 		}
-		return Optional.ofNullable(repository.save(existente.get()));
+		
 	}
 	
 	public Produtos cadastrarProduto(Produtos novoProduto, Long idUsuario) {
@@ -89,7 +121,7 @@ public class UsuarioService {
 			produtoExistente.get().setDataSafra(produto.getDataSafra());
 			produtoExistente.get().setDescricao(produto.getDescricao());
 			produtoExistente.get().setOrganico(produto.getOrganico());
-			//produtoExistente.get().setCategoria(produto.getCategoria());
+			produtoExistente.get().setCategoria(produto.getCategoria());
 			produtoExistente.get().setQtdEstoque(produto.getQtdEstoque());
 		}
 		return Optional.ofNullable(repositoryProdutos.save(produtoExistente.get()));
@@ -112,8 +144,6 @@ public class UsuarioService {
 		Optional<Produtos> produtoExistente = repositoryProdutos.findById(idProduto);
 		if(usuarioExistente.get().getIdUsuario() == produtoExistente.get().getCriadoPor().getIdUsuario()) {
 			if(usuarioExistente.isPresent() && produtoExistente.isPresent()) {
-				//produtoExistente.get().setCriadoPor(null);
-				//repositoryProdutos.save(produtoExistente.get());
 				repositoryProdutos.deleteById(produtoExistente.get().getIdProduto());
 				return repository.findById(usuarioExistente.get().getIdUsuario()).get();
 			}

@@ -24,10 +24,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
-
-//import com.ecommerce.organicos.model.util.Categoria;
+import com.ecommerce.organicos.model.util.Categoria;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -43,10 +41,8 @@ public class Produtos {
 	private Date dataSafra;
 	
 	@NotNull
-	@Size(min = 5, max = 30)
 	private String titulo;
 	
-	@Size(max = 250)
 	private String descricao;
 	
 	@NotNull
@@ -59,7 +55,7 @@ public class Produtos {
 	
 	@NotNull
 	@Enumerated(EnumType.STRING)
-	//private Categoria categoria;
+	private Categoria categoria;
 	
 	
 	@Column(name="Preço", columnDefinition="Decimal(5,2)")
@@ -127,7 +123,7 @@ public class Produtos {
 		this.qtdEstoque = qtdEstoque;
 	}
 
-   /*
+
 	public Categoria getCategoria() {
 		return categoria;
 	}
@@ -135,7 +131,6 @@ public class Produtos {
 	public void setCategoria(Categoria categoria) {
 		this.categoria = categoria;
 	}
-	*/
 
 	public Usuarios getCriadoPor() {
 		return criadoPor;
