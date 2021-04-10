@@ -107,6 +107,7 @@ public class UsuarioService {
 		Optional<Usuarios> usuarioExistente  = repository.findById(idUsuario);
 		if(usuarioExistente.isPresent()) {
 			produtoExistente.setCriadoPor(usuarioExistente.get());
+			usuarioExistente.get().setDoacao(produtoExistente.getPreco() * 0.05);
 			return repositoryProdutos.save(produtoExistente);
 		}
 		return null;
@@ -128,12 +129,13 @@ public class UsuarioService {
 	}
 	
 	
-	public Usuarios comprarProduto(Long idUsuario, Long idProduto, int qtdCompras) {
+	public Usuarios comprarProduto(Long idUsuario, Long idProduto, int qtdCompras, double valorDoacao) {
 		Optional<Usuarios> usuarioExistente = repository.findById(idUsuario);
 		Optional<Produtos> produtoExistente = repositoryProdutos.findById(idProduto);
 			if(usuarioExistente.isPresent() && produtoExistente.isPresent()) {
 				usuarioExistente.get().getMinhasCompras().add(produtoExistente.get());
 				usuarioExistente.get().setValorCompra(produtoExistente.get().getPreco()*qtdCompras);
+				usuarioExistente.get().setDoacao(valorDoacao);
 				return repository.save(usuarioExistente.get());
 			}
 			return null;
