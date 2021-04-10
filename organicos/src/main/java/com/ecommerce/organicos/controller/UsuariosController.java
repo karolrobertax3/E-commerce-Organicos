@@ -90,9 +90,8 @@ public class UsuariosController {
 		}
 	}
 
-	// OLHAR AQUI
-	@PutMapping("/alterar/login")
-	public ResponseEntity<?> alterarLogin(@RequestBody Usuarios usuarios) {
+	@PutMapping("/alterar/senha")
+	public ResponseEntity<?> alterarSenha(@RequestBody Usuarios usuarios) {
 		Optional<Usuarios> alterado = service.alterarSenha(usuarios);
 		if (alterado.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário Inexistente");
@@ -128,7 +127,8 @@ public class UsuariosController {
 	public ResponseEntity<?> novaCompra(
 			@PathVariable(value = "id_Produto") Long idProduto,
 			@PathVariable(value = "id_usuario") Long idUsuario,
-			@RequestParam(defaultValue = "") int qtdCompras) {
+			@RequestParam(defaultValue = "") int qtdCompras,
+			@RequestParam(defaultValue = "") double valorDoacao) {
 		Optional<Usuarios> usuarioExistente = repository.findById(idUsuario);
 		Optional<Produtos> produtoExistente = repositoryProduto.findById(idProduto);
 		if(usuarioExistente.get().getIdUsuario() == produtoExistente.get().getCriadoPor().getIdUsuario()) {
@@ -136,7 +136,7 @@ public class UsuariosController {
 		} else {
 			produtoExistente.get().setQtdEstoque(produtoExistente.get().getQtdEstoque()-qtdCompras);
 			if(produtoExistente.get().getQtdEstoque() >= produtoExistente.get().getQtdCompras()) {
-				Usuarios compra = service.comprarProduto(idUsuario, idProduto, qtdCompras);
+				Usuarios compra = service.comprarProduto(idUsuario, idProduto, qtdCompras,valorDoacao);
 				if(compra == null) {
 					return new ResponseEntity<String>("Produto ou usuário inválido", HttpStatus.NO_CONTENT);
 				}

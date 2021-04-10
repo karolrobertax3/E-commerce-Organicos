@@ -48,6 +48,10 @@ public class Usuarios {
 		
 	private float valorCompra;
 	
+	private double doacao;
+	
+	
+	
 	
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(
@@ -128,6 +132,14 @@ public class Usuarios {
 
 	public void setValorCompra(float valorCompra) {
 		this.valorCompra = valorCompra;
+	}
+	
+	public double getDoacao() {
+		return doacao;
+	}
+
+	public void setDoacao(double doacao) {
+		this.doacao = doacao;
 	}
 
 	public List<Produtos> getMinhasCompras() {
