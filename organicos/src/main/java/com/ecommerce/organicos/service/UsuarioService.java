@@ -62,6 +62,10 @@ public class UsuarioService {
 		if(usuarioExistente.isPresent()) {
 			produtoExistente.setCriadoPor(usuarioExistente.get());
 			usuarioExistente.get().setDoacao(produtoExistente.getPreco() * 0.05);
+			if(produtoExistente.getQtdEstoque()>0) {
+				produtoExistente.setAtivo(true);
+			}
+			
 			return repositoryProdutos.save(produtoExistente);
 		}
 		return null;
@@ -132,20 +136,5 @@ public class UsuarioService {
 				return repository.save(usuarioExistente.get());
 			}
 			return null;
-	}
-	
-	public Usuarios deletarProduto(Long idProduto, Long idUsuario) {
-		Optional<Usuarios> usuarioExistente = repository.findById(idUsuario);
-		Optional<Produtos> produtoExistente = repositoryProdutos.findById(idProduto);
-		if(usuarioExistente.get().getIdUsuario() == produtoExistente.get().getCriadoPor().getIdUsuario()) {
-			if(usuarioExistente.isPresent() && produtoExistente.isPresent()) {
-				repositoryProdutos.deleteById(produtoExistente.get().getIdProduto());
-				return repository.findById(usuarioExistente.get().getIdUsuario()).get();
-			}
-		}else {
-			System.out.println("Somente o usuário criador pode apagar seu próprio produto");
-		}
-		
-		return null;
 	}
 }

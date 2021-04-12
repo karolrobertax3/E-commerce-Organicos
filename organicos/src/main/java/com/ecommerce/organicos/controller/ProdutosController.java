@@ -30,13 +30,6 @@ public class ProdutosController {
 		return new ResponseEntity <List<Produtos>> (service.listarTodos(),HttpStatus.OK);
 	}
 	
-	@GetMapping("/{id}")
-	public ResponseEntity<Optional<Produtos>> buscarPorId(@PathVariable Long id){
-		return new ResponseEntity <Optional<Produtos>> (service.buscarPorId(id),HttpStatus.OK);
-		
-	}
-	
-	
 	@GetMapping("/organicos")
 	public ResponseEntity <List<Produtos>> listarOrganicos(@RequestParam(defaultValue = "") boolean organicos){
 		return new ResponseEntity <List<Produtos>> (service.listarOrganicos(organicos),HttpStatus.OK);
