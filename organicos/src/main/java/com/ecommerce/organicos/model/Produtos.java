@@ -51,6 +51,8 @@ public class Produtos {
 	@NotNull
 	private int qtdEstoque;
 	
+	private boolean ativo;
+	
 	private int qtdCompras;
 	
 	@NotNull
@@ -123,6 +125,14 @@ public class Produtos {
 		this.qtdEstoque = qtdEstoque;
 	}
 
+
+	public boolean getAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(boolean ativo) {
+		this.ativo = ativo;
+	}
 
 	public Categoria getCategoria() {
 		return categoria;
