@@ -20,10 +20,6 @@ public class ProdutoService {
 		return repository.findAll();
 	}
 	
-	public Optional<Produtos> buscarPorId(Long id){
-		return repository.findById(id);
-	}
-	
 	public List<Produtos> listarOrganicos(boolean organico){
 		return repository.findAllByOrganico(organico);
 	}

@@ -58,26 +58,26 @@ public class UsuariosController {
 				.orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
 	}
 	
-	@GetMapping
-	public ResponseEntity<List<Usuarios>> listarTodos() {
-		return new ResponseEntity<List<Usuarios>>(service.listarTodos(), HttpStatus.OK);
+	@PostMapping("/produto/novo/{id_usuario}")
+	public ResponseEntity<?> novoProduto(
+			@PathVariable(value = "id_usuario") Long idUsuario,
+			@Valid @RequestBody Produtos novoProduto) {
+		Produtos cadastro = service.cadastrarProduto(novoProduto, idUsuario);
+		if(cadastro == null) {
+			return new ResponseEntity<String>("Falha no cadastro", HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<Produtos>(cadastro, HttpStatus.CREATED);
 	}
-
-	@GetMapping("/{id}")
-	public ResponseEntity<Optional<Usuarios>> buscarPorId(@PathVariable Long id) {
-		return new ResponseEntity<Optional<Usuarios>>(service.buscarPorId(id), HttpStatus.OK);
-	}
-	
 	
 	@GetMapping("/nome")
-	public ResponseEntity<List<Usuarios>> buscarPorNome(@RequestParam(defaultValue = "") String nome) {
-		return new ResponseEntity<List<Usuarios>>(service.buscarPorNome(nome), HttpStatus.OK);
+	public ResponseEntity<List<Usuarios>> buscarPorNome(@RequestParam(defaultValue = "") String razaoSocial) {
+		return new ResponseEntity<List<Usuarios>>(service.buscarProdutorPorNome(razaoSocial), HttpStatus.OK);
 
 	}
 
 	@GetMapping("/produtores/regiao")
 	public ResponseEntity<List<Usuarios>> buscarPorRegiao(@RequestParam(defaultValue = "") String endereco) {
-		return new ResponseEntity<List<Usuarios>>(service.buscarPorRegiao(endereco), HttpStatus.OK);
+		return new ResponseEntity<List<Usuarios>>(service.buscarProdutorPorRegiao(endereco), HttpStatus.OK);
 	}
 
 	@PutMapping
@@ -98,17 +98,6 @@ public class UsuariosController {
 		} else {
 			return ResponseEntity.status(HttpStatus.OK).body(alterado.get());
 		}
-	}
-	
-	@PostMapping("/produto/novo/{id_usuario}")
-	public ResponseEntity<?> novoProduto(
-			@PathVariable(value = "id_usuario") Long idUsuario,
-			@Valid @RequestBody Produtos novoProduto) {
-		Produtos cadastro = service.cadastrarProduto(novoProduto, idUsuario);
-		if(cadastro == null) {
-			return new ResponseEntity<String>("Falha no cadastro", HttpStatus.NO_CONTENT);
-		}
-		return new ResponseEntity<Produtos>(cadastro, HttpStatus.CREATED);
 	}
 	
 	@PutMapping("/produto/edite/{id_usuario}")
@@ -135,6 +124,9 @@ public class UsuariosController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("O usuário criador não pode comprar seu próprio produto");
 		} else {
 			produtoExistente.get().setQtdEstoque(produtoExistente.get().getQtdEstoque()-qtdCompras);
+			if(produtoExistente.get().getQtdEstoque()<=0) {
+				produtoExistente.get().setAtivo(false);
+			}
 			if(produtoExistente.get().getQtdEstoque() >= produtoExistente.get().getQtdCompras()) {
 				Usuarios compra = service.comprarProduto(idUsuario, idProduto, qtdCompras,valorDoacao);
 				if(compra == null) {
@@ -145,17 +137,6 @@ public class UsuariosController {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Estoque insuficiente");
 			}
 		}
-	}
-	
-	@DeleteMapping("/produto/delete/{id_Produto}/{id_usuario}")
-	public ResponseEntity<?> removerProduto(
-			@PathVariable(value = "id_Produto")Long idProduto,
-			@PathVariable(value = "id_usuario")Long idUsuario){
-		Usuarios retorno = service.deletarProduto(idProduto, idUsuario);
-		if(retorno == null) {
-			return new ResponseEntity<String>("Produto ou usuário invalido", HttpStatus.NO_CONTENT);
-		}
-		return new ResponseEntity<Usuarios>(retorno, HttpStatus.ACCEPTED);
-	}
+}
 
 }
