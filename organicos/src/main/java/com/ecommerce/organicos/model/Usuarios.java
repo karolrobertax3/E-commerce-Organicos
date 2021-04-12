@@ -26,10 +26,7 @@ public class Usuarios {
 	private Long idUsuario;
 	
 	@NotNull
-	private String nome;
-	
-	@NotNull
-	private String razaoSocial;
+	private String nomeRazaoSocial;
 	
 	@NotNull
 	private String cpfCnpj;
@@ -79,20 +76,14 @@ public class Usuarios {
 		this.idUsuario = idUsuario;
 	}
 
+	public String getNomeRazaoSocial() {
+		return nomeRazaoSocial;
+	}
 
-	public String getNome() {
-		return nome;
+	public void setNomeRazaoSocial(String nomeRazaoSocial) {
+		this.nomeRazaoSocial = nomeRazaoSocial;
 	}
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-	public String getRazaoSocial() {
-		return razaoSocial;
-	}
-	public void setRazaoSocial(String razaoSocial) {
-		this.razaoSocial = razaoSocial;
-	}
-	
+
 	public String getCpfCnpj() {
 		return cpfCnpj;
 	}

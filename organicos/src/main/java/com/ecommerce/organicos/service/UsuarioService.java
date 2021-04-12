@@ -47,7 +47,7 @@ public class UsuarioService {
 				String authHeader = "Basic " + new String(encodedAuth);
 				
 				usuarioLogin.get().setToken(authHeader);				
-				usuarioLogin.get().setNome(usuarioPresente.get().getNome());
+				usuarioLogin.get().setNome(usuarioPresente.get().getNomeRazaoSocial());
 				usuarioLogin.get().setSenha(usuarioPresente.get().getSenha());
 
 				return usuarioLogin;
@@ -56,21 +56,26 @@ public class UsuarioService {
 		return null;
 	}
 	
-	public List<Usuarios> listarTodos(){
-		return repository.findAll();
+	public Produtos cadastrarProduto(Produtos novoProduto, Long idUsuario) {
+		Produtos produtoExistente = repositoryProdutos.save(novoProduto);
+		Optional<Usuarios> usuarioExistente  = repository.findById(idUsuario);
+		if(usuarioExistente.isPresent()) {
+			produtoExistente.setCriadoPor(usuarioExistente.get());
+			usuarioExistente.get().setDoacao(produtoExistente.getPreco() * 0.05);
+			return repositoryProdutos.save(produtoExistente);
+		}
+		return null;
 	}
 	
-	public Optional<Usuarios> buscarPorId(Long id){
-		return repository.findById(id);
+	public List<Usuarios> buscarProdutorPorNome (String nome){
+		return repository.findUsuariosByNomeRazaoSocial(nome);
 		
 	}
-	public List<Usuarios> buscarPorNome (String nome){
-		return repository.findAllByNomeContainingIgnoreCase(nome);
+	
+	public List<Usuarios> buscarProdutorPorRegiao (String regiao){
+		return repository.findUsuariosByEndereco(regiao);
 	}
 	
-	public List<Usuarios> buscarPorRegiao (String regiao){
-		return repository.findAllByEnderecoContainingIgnoreCase(regiao);
-	}
 	
 	public Optional<Usuarios> alterar (Usuarios usuarios) {
 		Optional<Usuarios> existente = repository.findById(usuarios.getIdUsuario());
@@ -78,8 +83,7 @@ public class UsuarioService {
 			return Optional.empty();
 		}
 		else {
-			existente.get().setRazaoSocial(usuarios.getRazaoSocial());
-			existente.get().setNome(usuarios.getNome());
+			existente.get().setNomeRazaoSocial(usuarios.getNomeRazaoSocial());
 			existente.get().setCpfCnpj(usuarios.getCpfCnpj());
 			existente.get().setEndereco(usuarios.getEndereco());
 			existente.get().setTelefone(usuarios.getTelefone());
@@ -100,17 +104,6 @@ public class UsuarioService {
 			return Optional.ofNullable(repository.save(existente.get()));
 		}
 		
-	}
-	
-	public Produtos cadastrarProduto(Produtos novoProduto, Long idUsuario) {
-		Produtos produtoExistente = repositoryProdutos.save(novoProduto);
-		Optional<Usuarios> usuarioExistente  = repository.findById(idUsuario);
-		if(usuarioExistente.isPresent()) {
-			produtoExistente.setCriadoPor(usuarioExistente.get());
-			usuarioExistente.get().setDoacao(produtoExistente.getPreco() * 0.05);
-			return repositoryProdutos.save(produtoExistente);
-		}
-		return null;
 	}
 	
 	public Optional<Produtos> editarProduto(Long idUsuario, Produtos produto){
