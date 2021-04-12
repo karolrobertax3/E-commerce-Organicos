@@ -124,6 +124,9 @@ public class UsuariosController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("O usuário criador não pode comprar seu próprio produto");
 		} else {
 			produtoExistente.get().setQtdEstoque(produtoExistente.get().getQtdEstoque()-qtdCompras);
+			if(produtoExistente.get().getQtdEstoque()<=0) {
+				produtoExistente.get().setAtivo(false);
+			}
 			if(produtoExistente.get().getQtdEstoque() >= produtoExistente.get().getQtdCompras()) {
 				Usuarios compra = service.comprarProduto(idUsuario, idProduto, qtdCompras,valorDoacao);
 				if(compra == null) {
@@ -135,16 +138,4 @@ public class UsuariosController {
 			}
 		}
 	}
-	
-	@DeleteMapping("/produto/delete/{id_Produto}/{id_usuario}")
-	public ResponseEntity<?> removerProduto(
-			@PathVariable(value = "id_Produto")Long idProduto,
-			@PathVariable(value = "id_usuario")Long idUsuario){
-		Usuarios retorno = service.deletarProduto(idProduto, idUsuario);
-		if(retorno == null) {
-			return new ResponseEntity<String>("Produto ou usuário invalido", HttpStatus.NO_CONTENT);
-		}
-		return new ResponseEntity<Usuarios>(retorno, HttpStatus.ACCEPTED);
-	}
-
 }
