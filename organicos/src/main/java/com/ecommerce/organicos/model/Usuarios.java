@@ -3,7 +3,6 @@ package com.ecommerce.organicos.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -15,7 +14,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -28,40 +26,31 @@ public class Usuarios {
 	private Long idUsuario;
 	
 	@NotNull
-	@Size(min = 10, max = 50)
-	private String nome;
+	private String nomeRazaoSocial;
 	
 	@NotNull
-	@Size(min = 10, max = 60)
-	private String razaoSocial;
+	private String cpfCnpj;
 	
 	@NotNull
-	@Size(min = 11, max = 14)
-	private String cpf;
-	
-	@NotNull
-	@Size(min = 14, max = 18)
-	private String cnpj;
-	
-	@NotNull
-	@Size(min = 10, max = 50)
 	private String email;
 	
 	@NotNull
-	@Size(min = 11, max = 15)
 	private String telefone;
 	
 	@NotNull
-	@Size(min = 8, max = 100)
 	private String endereco;
 	
 	@NotNull
-	@Size(min = 8)
 	private String senha;
-	
+		
 	private float valorCompra;
 	
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private double doacao;
+	
+	
+	
+	
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(
 	  name = "compras", 
 	  joinColumns = @JoinColumn(name = "comprador_id"), 
@@ -69,7 +58,8 @@ public class Usuarios {
 	@JsonIgnoreProperties({"compradoPor", "qtdCompras"})
 	private List<Produtos> minhasCompras = new ArrayList<>();
 	
-	@OneToMany(mappedBy = "criadoPor", cascade = CascadeType.ALL)
+	
+	@OneToMany(mappedBy = "criadoPor")
 	@JsonIgnoreProperties("criadoPor")
 	private List<Produtos> meusProdutos = new ArrayList<>();
 
@@ -86,34 +76,20 @@ public class Usuarios {
 		this.idUsuario = idUsuario;
 	}
 
-
-	public String getNome() {
-		return nome;
-	}
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-	public String getRazaoSocial() {
-		return razaoSocial;
-	}
-	public void setRazaoSocial(String razaoSocial) {
-		this.razaoSocial = razaoSocial;
+	public String getNomeRazaoSocial() {
+		return nomeRazaoSocial;
 	}
 
-	public String getCpf() {
-		return cpf;
+	public void setNomeRazaoSocial(String nomeRazaoSocial) {
+		this.nomeRazaoSocial = nomeRazaoSocial;
 	}
 
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
+	public String getCpfCnpj() {
+		return cpfCnpj;
 	}
 
-	public String getCnpj() {
-		return cnpj;
-	}
-
-	public void setCnpj(String cnpj) {
-		this.cnpj = cnpj;
+	public void setCpfCnpj(String cpfCnpj) {
+		this.cpfCnpj = cpfCnpj;
 	}
 
 	public String getEmail() {
@@ -148,6 +124,14 @@ public class Usuarios {
 	public void setValorCompra(float valorCompra) {
 		this.valorCompra = valorCompra;
 	}
+	
+	public double getDoacao() {
+		return doacao;
+	}
+
+	public void setDoacao(double doacao) {
+		this.doacao = doacao;
+	}
 
 	public List<Produtos> getMinhasCompras() {
 		return minhasCompras;
@@ -164,6 +148,5 @@ public class Usuarios {
 	public void setMeusProdutos(List<Produtos> meusProdutos) {
 		this.meusProdutos = meusProdutos;
 	}
-	
 
 }
