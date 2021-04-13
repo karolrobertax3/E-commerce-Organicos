@@ -4,15 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "usuarios")
@@ -20,82 +23,75 @@ public class Usuarios {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Long idUsuario;
 	
 	@NotNull
-	@Size(min = 10, max = 50)
-	private String nome;
+	private String nomeRazaoSocial;
 	
 	@NotNull
-	@Size(min = 10, max = 60)
-	private String razaoSocial;
+	private String cpfCnpj;
 	
 	@NotNull
-	@Size(min = 11, max = 14)
-	private String CPF;
-	
-	@NotNull
-	@Size(min = 14, max = 18)
-	private String CNPJ;
-	
-	@NotNull
-	@Size(min = 10, max = 50)
 	private String email;
 	
 	@NotNull
-	@Size(min = 11, max = 15)
 	private String telefone;
 	
 	@NotNull
-	@Size(min = 8, max = 100)
 	private String endereco;
 	
 	@NotNull
-	@Size(min = 8)
 	private String senha;
+		
+	private float valorCompra;
+	
+	private double doacao;
 	
 	
-	@ManyToMany
+	
+	
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(
-	  name = "compras_vendas", 
-	  joinColumns = @JoinColumn(name = "usuario_id"), 
+	  name = "compras", 
+	  joinColumns = @JoinColumn(name = "comprador_id"), 
 	  inverseJoinColumns = @JoinColumn(name = "produto_id"))
-	private List<Produtos> produtos = new ArrayList<>();
+	@JsonIgnoreProperties({"compradoPor", "qtdCompras"})
+	private List<Produtos> minhasCompras = new ArrayList<>();
+	
+	
+	@OneToMany(mappedBy = "criadoPor")
+	@JsonIgnoreProperties("criadoPor")
+	private List<Produtos> meusProdutos = new ArrayList<>();
 
 	public Usuarios() {
 		
 	}
-	
-	public Long getId() {
-		return id;
+
+	public Long getIdUsuario() {
+		return idUsuario;
 	}
-	public void setId(Long id) {
-		this.id = id;
+
+
+	public void setIdUsuario(Long idUsuario) {
+		this.idUsuario = idUsuario;
 	}
-	public String getNome() {
-		return nome;
+
+	public String getNomeRazaoSocial() {
+		return nomeRazaoSocial;
 	}
-	public void setNome(String nome) {
-		this.nome = nome;
+
+	public void setNomeRazaoSocial(String nomeRazaoSocial) {
+		this.nomeRazaoSocial = nomeRazaoSocial;
 	}
-	public String getRazaoSocial() {
-		return razaoSocial;
+
+	public String getCpfCnpj() {
+		return cpfCnpj;
 	}
-	public void setRazaoSocial(String razaoSocial) {
-		this.razaoSocial = razaoSocial;
+
+	public void setCpfCnpj(String cpfCnpj) {
+		this.cpfCnpj = cpfCnpj;
 	}
-	public String getCPF() {
-		return CPF;
-	}
-	public void setCPF(String cPF) {
-		CPF = cPF;
-	}
-	public String getCNPJ() {
-		return CNPJ;
-	}
-	public void setCNPJ(String cNPJ) {
-		CNPJ = cNPJ;
-	}
+
 	public String getEmail() {
 		return email;
 	}
@@ -121,13 +117,36 @@ public class Usuarios {
 		this.senha = senha;
 	}
 
-	public List<Produtos> getProdutos() {
-		return produtos;
+	public float getValorCompra() {
+		return valorCompra;
 	}
 
-	public void setProdutos(List<Produtos> produtos) {
-		this.produtos = produtos;
+	public void setValorCompra(float valorCompra) {
+		this.valorCompra = valorCompra;
 	}
 	
+	public double getDoacao() {
+		return doacao;
+	}
+
+	public void setDoacao(double doacao) {
+		this.doacao = doacao;
+	}
+
+	public List<Produtos> getMinhasCompras() {
+		return minhasCompras;
+	}
+
+	public void setMinhasCompras(List<Produtos> minhasCompras) {
+		this.minhasCompras = minhasCompras;
+	}
+
+	public List<Produtos> getMeusProdutos() {
+		return meusProdutos;
+	}
+
+	public void setMeusProdutos(List<Produtos> meusProdutos) {
+		this.meusProdutos = meusProdutos;
+	}
 
 }
