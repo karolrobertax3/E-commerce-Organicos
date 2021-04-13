@@ -11,9 +11,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -54,12 +52,6 @@ public class Produtos {
 	@ManyToMany(mappedBy = "produtos")
 	private List<Usuarios> usuarios = new ArrayList<>();
 	
-	
-	/*@ManyToOne
-	@JoinColumn(name="categoria_id")
-	private Categoria categoriaDoProduto;*/
-	
-
 	
 	public Produtos() {
 
@@ -120,14 +112,5 @@ public class Produtos {
 		this.categoriaDoProduto = categoriaDoProduto;
 	}
 
-	/*public Categoria getCategoriaDoProduto() {
-		return categoriaDoProduto;
-	}
-
-	public void setCategoriaDoProduto(Categoria categoriaDoProduto) {
-		this.categoriaDoProduto = categoriaDoProduto;
-	}*/
-
 	
-
 }
