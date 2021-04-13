@@ -1,8 +1,6 @@
 package com.ecommerce.organicos.service;
 
 import java.util.List;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +17,7 @@ public class ProdutoService {
 	public List<Produtos> listarTodos(){
 		return repository.findAll();
 	}
-	z
+	
 	public List<Produtos> listarOrganicos(boolean organico){
 	return repository.findAllByOrganico(organico);
 	}
