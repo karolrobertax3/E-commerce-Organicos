@@ -137,5 +137,8 @@ public class UsuariosController {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Estoque insuficiente");
 			}
 		}
-	}
+
+}
+
+
 }
