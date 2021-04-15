@@ -133,14 +133,6 @@ public class Produtos {
 		this.ativo = ativo;
 	}
 
-	public boolean getAtivo() {
-		return ativo;
-	}
-
-	public void setAtivo(boolean ativo) {
-		this.ativo = ativo;
-	}
-
 	public Categoria getCategoria() {
 		return categoria;
 	}

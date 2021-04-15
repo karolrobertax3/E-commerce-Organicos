@@ -65,10 +65,7 @@ public class UsuarioService {
 			if(produtoExistente.getQtdEstoque()>0) {
 				produtoExistente.setAtivo(true);
 			}
-<<<<<<< HEAD
-=======
-			
->>>>>>> c22f69f3feec77c290315f4f8642a674bfb32df9
+
 			return repositoryProdutos.save(produtoExistente);
 		}
 		return null;
