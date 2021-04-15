@@ -65,7 +65,6 @@ public class UsuarioService {
 			if(produtoExistente.getQtdEstoque()>0) {
 				produtoExistente.setAtivo(true);
 			}
-
 			return repositoryProdutos.save(produtoExistente);
 		}
 		return null;
@@ -124,7 +123,6 @@ public class UsuarioService {
 		}
 		return Optional.ofNullable(repositoryProdutos.save(produtoExistente.get()));
 	}
-	
 	
 	public Usuarios comprarProduto(Long idUsuario, Long idProduto, int qtdCompras, double valorDoacao) {
 		Optional<Usuarios> usuarioExistente = repository.findById(idUsuario);
