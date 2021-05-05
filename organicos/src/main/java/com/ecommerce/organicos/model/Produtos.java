@@ -29,7 +29,7 @@ import com.ecommerce.organicos.model.util.Categoria;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
-@Table(name = "produtos")
+@Table(name = "tb_produtos")
 public class Produtos {
 	
 	@Id

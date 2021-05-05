@@ -78,7 +78,7 @@ public class UsuarioService {
 	}
 	
 	public List<Usuarios> buscarProdutorPorRegiao (String regiao){
-		return repository.findUsuariosByEndereco(regiao);
+		return repository.findUsuariosByUf(regiao);
 	}
 	
 	
