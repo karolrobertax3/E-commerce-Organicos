@@ -5,6 +5,8 @@ public class UsuarioLogin {
 	private String nome;
 	private String email;
 	private String senha;
+	private String foto;
+	private String fotoLoja;
 	private String token;
 	
 	public String getNome() {
@@ -30,6 +32,18 @@ public class UsuarioLogin {
 	}
 	public void setToken(String token) {
 		this.token = token;
+	}
+	public String getFoto() {
+		return foto;
+	}
+	public void setFoto(String foto) {
+		this.foto = foto;
+	}
+	public String getFotoLoja() {
+		return fotoLoja;
+	}
+	public void setFotoLoja(String fotoLoja) {
+		this.fotoLoja = fotoLoja;
 	}
 	
 }
