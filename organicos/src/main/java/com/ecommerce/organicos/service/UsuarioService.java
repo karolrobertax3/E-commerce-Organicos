@@ -49,6 +49,8 @@ public class UsuarioService {
 				usuarioLogin.get().setToken(authHeader);				
 				usuarioLogin.get().setNome(usuarioPresente.get().getNomeRazaoSocial());
 				usuarioLogin.get().setSenha(usuarioPresente.get().getSenha());
+				usuarioLogin.get().setFoto(usuarioPresente.get().getFoto());
+				usuarioLogin.get().setFotoLoja(usuarioPresente.get().getFotoLoja());
 
 				return usuarioLogin;
 			}
@@ -90,6 +92,8 @@ public class UsuarioService {
 			existente.get().setCpfCnpj(usuarios.getCpfCnpj());
 			existente.get().setEndereco(usuarios.getEndereco());
 			existente.get().setTelefone(usuarios.getTelefone());
+			existente.get().setFoto(usuarios.getFoto());
+			existente.get().setFotoLoja(usuarios.getFotoLoja());
 		}
 		return Optional.ofNullable(repository.save(existente.get()));
 	}
@@ -120,6 +124,7 @@ public class UsuarioService {
 			produtoExistente.get().setOrganico(produto.getOrganico());
 			produtoExistente.get().setCategoria(produto.getCategoria());
 			produtoExistente.get().setQtdEstoque(produto.getQtdEstoque());
+			produtoExistente.get().setFotoProduto(produto.getFotoProduto());
 		}
 		return Optional.ofNullable(repositoryProdutos.save(produtoExistente.get()));
 	}

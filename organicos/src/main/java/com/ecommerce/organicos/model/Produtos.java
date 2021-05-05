@@ -45,6 +45,8 @@ public class Produtos {
 	
 	private String descricao;
 	
+	private String fotoProduto;
+	
 	@NotNull
 	private boolean organico;
 	
@@ -162,5 +164,14 @@ public class Produtos {
 
 	public void setQtdCompras(int qtdCompras) {
 		this.qtdCompras = qtdCompras;
+	}
+
+	public String getFotoProduto() {
+		return fotoProduto;
+	}
+
+	public void setFotoProduto(String fotoProduto) {
+		this.fotoProduto = fotoProduto;
 	}	
+	
 }
