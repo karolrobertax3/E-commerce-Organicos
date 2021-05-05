@@ -49,5 +49,4 @@ public class ProdutosController {
 	public ResponseEntity<List<Produtos>> preco(@RequestParam(defaultValue = " ") float preco1, float preco2){
 		return new ResponseEntity<List<Produtos>>(service.filtrarPorPreco(preco1, preco2),HttpStatus.OK);
 	}
-
 }
