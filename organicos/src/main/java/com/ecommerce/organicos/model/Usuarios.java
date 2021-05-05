@@ -42,6 +42,10 @@ public class Usuarios {
 	
 	@NotNull
 	private String senha;
+	
+	private String foto;
+	
+	private String fotoLoja;
 		
 	private float valorCompra;
 	
@@ -149,4 +153,20 @@ public class Usuarios {
 		this.meusProdutos = meusProdutos;
 	}
 
+	public String getFoto() {
+		return foto;
+	}
+
+	public void setFoto(String foto) {
+		this.foto = foto;
+	}
+
+	public String getFotoLoja() {
+		return fotoLoja;
+	}
+
+	public void setFotoLoja(String fotoLoja) {
+		this.fotoLoja = fotoLoja;
+	}
+	
 }
