@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -76,8 +75,8 @@ public class UsuariosController {
 	}
 
 	@GetMapping("/produtores/regiao")
-	public ResponseEntity<List<Usuarios>> buscarPorRegiao(@RequestParam(defaultValue = "") String endereco) {
-		return new ResponseEntity<List<Usuarios>>(service.buscarProdutorPorRegiao(endereco), HttpStatus.OK);
+	public ResponseEntity<List<Usuarios>> buscarPorRegiao(@RequestParam(defaultValue = "") String uf) {
+		return new ResponseEntity<List<Usuarios>>(service.buscarProdutorPorRegiao(uf), HttpStatus.OK);
 	}
 
 	@PutMapping
@@ -137,6 +136,5 @@ public class UsuariosController {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Estoque insuficiente");
 			}
 		}
-}
-
+	}
 }

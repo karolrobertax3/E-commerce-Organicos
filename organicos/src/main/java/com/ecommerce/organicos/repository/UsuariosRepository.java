@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.ecommerce.organicos.model.Produtos;
+// import com.ecommerce.organicos.model.Produtos;
 import com.ecommerce.organicos.model.Usuarios;
 
 @Repository
@@ -26,6 +26,6 @@ public interface UsuariosRepository extends JpaRepository<Usuarios, Long> {
 	@Query(value = "SELECT * from usuarios inner join produtos on criador=id_usuario"
 			+ " where usuarios.endereco like %:regiao%", 
 			nativeQuery = true)
-	public List<Usuarios> findUsuariosByEndereco (@Param("regiao")String regiao);
+	public List<Usuarios> findUsuariosByUf (@Param("regiao")String uf);
 	
 }
