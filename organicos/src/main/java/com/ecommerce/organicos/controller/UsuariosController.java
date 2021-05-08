@@ -53,7 +53,7 @@ public class UsuariosController {
 	@PostMapping("/logar")
 	public ResponseEntity<UsuarioLogin> auth(@RequestBody Optional<UsuarioLogin> usuarioLogin)  {
 		return service.logar(usuarioLogin)
-				.map(email -> ResponseEntity.ok(email))
+				.map(userLogin -> ResponseEntity.ok(userLogin))
 				.orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
 	}
 	
@@ -75,8 +75,8 @@ public class UsuariosController {
 	}
 
 	@GetMapping("/produtores/regiao")
-	public ResponseEntity<List<Usuarios>> buscarPorRegiao(@RequestParam(defaultValue = "") String endereco) {
-		return new ResponseEntity<List<Usuarios>>(service.buscarProdutorPorRegiao(endereco), HttpStatus.OK);
+	public ResponseEntity<List<Usuarios>> buscarPorRegiao(@RequestParam(defaultValue = "") String uf) {
+		return new ResponseEntity<List<Usuarios>>(service.buscarProdutorPorRegiao(uf), HttpStatus.OK);
 	}
 
 	@PutMapping

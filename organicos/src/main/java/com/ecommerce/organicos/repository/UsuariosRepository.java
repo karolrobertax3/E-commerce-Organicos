@@ -26,6 +26,6 @@ public interface UsuariosRepository extends JpaRepository<Usuarios, Long> {
 	@Query(value = "SELECT * from usuarios inner join produtos on criador=id_usuario"
 			+ " where usuarios.endereco like %:regiao%", 
 			nativeQuery = true)
-	public List<Usuarios> findUsuariosByEndereco (@Param("regiao")String regiao);
+	public List<Usuarios> findUsuariosByUf (@Param("regiao")String uf);
 	
 }

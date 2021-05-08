@@ -51,6 +51,7 @@ public class UsuarioService {
 				usuarioLogin.get().setSenha(usuarioPresente.get().getSenha());
 				usuarioLogin.get().setFoto(usuarioPresente.get().getFoto());
 				usuarioLogin.get().setFotoLoja(usuarioPresente.get().getFotoLoja());
+				usuarioLogin.get().setIdUsuario(usuarioPresente.get().getIdUsuario());
 
 				return usuarioLogin;
 			}
@@ -78,7 +79,7 @@ public class UsuarioService {
 	}
 	
 	public List<Usuarios> buscarProdutorPorRegiao (String regiao){
-		return repository.findUsuariosByEndereco(regiao);
+		return repository.findUsuariosByUf(regiao);
 	}
 	
 	
