@@ -18,7 +18,7 @@ import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
-@Table(name = "usuarios")
+@Table(name = "tb_usuarios")
 public class Usuarios {
 	
 	@Id
@@ -39,6 +39,18 @@ public class Usuarios {
 	
 	@NotNull
 	private String endereco;
+	
+	@NotNull
+	private String numero;
+	
+	@NotNull
+	private String cidade;
+	
+	@NotNull
+	private String uf;
+	
+	@NotNull
+	private String cep;
 	
 	@NotNull
 	private String senha;
@@ -114,6 +126,39 @@ public class Usuarios {
 	public void setEndereco(String endereco) {
 		this.endereco = endereco;
 	}
+	
+	public String getNumero() {
+		return numero;
+	}
+
+	public void setNumero(String numero) {
+		this.numero = numero;
+	}
+
+	public String getCidade() {
+		return cidade;
+	}
+
+	public void setCidade(String cidade) {
+		this.cidade = cidade;
+	}
+
+	public String getUf() {
+		return uf;
+	}
+
+	public void setUf(String uf) {
+		this.uf = uf;
+	}
+
+	public String getCep() {
+		return cep;
+	}
+
+	public void setCep(String cep) {
+		this.cep = cep;
+	}
+
 	public String getSenha() {
 		return senha;
 	}
@@ -168,5 +213,6 @@ public class Usuarios {
 	public void setFotoLoja(String fotoLoja) {
 		this.fotoLoja = fotoLoja;
 	}
-	
+
+		
 }

@@ -29,7 +29,7 @@ import com.ecommerce.organicos.model.util.Categoria;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
-@Table(name = "produtos")
+@Table(name = "tb_produtos")
 public class Produtos {
 	
 	@Id
@@ -48,7 +48,7 @@ public class Produtos {
 	private String fotoProduto;
 	
 	@NotNull
-	private boolean organico;
+	private Boolean organico;
 	
 	@NotNull
 	private int qtdEstoque;
@@ -57,7 +57,7 @@ public class Produtos {
 	
 	private int qtdCompras;
 	
-	@NotNull
+	
 	@Enumerated(EnumType.STRING)
 	private Categoria categoria;
 	

@@ -39,6 +39,13 @@ public class UsuariosController {
 	@Autowired
 	private ProdutosRepository repositoryProduto;
 	
+	@GetMapping("/{id}")
+	public ResponseEntity<Usuarios> getById(@PathVariable Long idUsuario){
+		return repository.findById(idUsuario)
+				.map(resp -> ResponseEntity.ok(resp))
+				.orElse(ResponseEntity.notFound().build());
+	}
+	
 	@PostMapping("/cadastrar")
     public ResponseEntity<Object> cadastro(@Valid @RequestBody Usuarios usuario) {
         Optional<Usuarios> usuarioCadastrado = service.cadastrar(usuario);
@@ -53,7 +60,7 @@ public class UsuariosController {
 	@PostMapping("/logar")
 	public ResponseEntity<UsuarioLogin> auth(@RequestBody Optional<UsuarioLogin> usuarioLogin)  {
 		return service.logar(usuarioLogin)
-				.map(email -> ResponseEntity.ok(email))
+				.map(userLogin -> ResponseEntity.ok(userLogin))
 				.orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
 	}
 	
@@ -75,11 +82,11 @@ public class UsuariosController {
 	}
 
 	@GetMapping("/produtores/regiao")
-	public ResponseEntity<List<Usuarios>> buscarPorRegiao(@RequestParam(defaultValue = "") String endereco) {
-		return new ResponseEntity<List<Usuarios>>(service.buscarProdutorPorRegiao(endereco), HttpStatus.OK);
+	public ResponseEntity<List<Usuarios>> buscarPorRegiao(@RequestParam(defaultValue = "") String uf) {
+		return new ResponseEntity<List<Usuarios>>(service.buscarProdutorPorRegiao(uf), HttpStatus.OK);
 	}
 
-	@PutMapping
+	/*@PutMapping
 	public ResponseEntity<?> alterar(@RequestBody Usuarios usuarios) {
 		Optional<Usuarios> alterado = service.alterar(usuarios);
 		if (alterado.isEmpty()) {
@@ -97,6 +104,11 @@ public class UsuariosController {
 		} else {
 			return ResponseEntity.status(HttpStatus.OK).body(alterado.get());
 		}
+	}*/
+	
+	@PutMapping
+	public ResponseEntity<Usuarios> put(@RequestBody Usuarios usuario){
+		return ResponseEntity.ok(repository.save(usuario));
 	}
 	
 	@PutMapping("/produto/edite/{id_usuario}")
@@ -111,12 +123,11 @@ public class UsuariosController {
 		}
 	}
 	
-	@PutMapping("/produto/compra/{id_Produto}/{id_usuario}")
+	@PutMapping("/produto/compra/{id_Produto}/{id_usuario}/{qtdCompras}")
 	public ResponseEntity<?> novaCompra(
 			@PathVariable(value = "id_Produto") Long idProduto,
 			@PathVariable(value = "id_usuario") Long idUsuario,
-			@RequestParam(defaultValue = "") int qtdCompras,
-			@RequestParam(defaultValue = "") double valorDoacao) {
+			@PathVariable(value = "qtdCompras") int qtdCompras) {
 		Optional<Usuarios> usuarioExistente = repository.findById(idUsuario);
 		Optional<Produtos> produtoExistente = repositoryProduto.findById(idProduto);
 		if(usuarioExistente.get().getIdUsuario() == produtoExistente.get().getCriadoPor().getIdUsuario()) {
@@ -127,7 +138,7 @@ public class UsuariosController {
 				produtoExistente.get().setAtivo(false);
 			}
 			if(produtoExistente.get().getQtdEstoque() >= produtoExistente.get().getQtdCompras()) {
-				Usuarios compra = service.comprarProduto(idUsuario, idProduto, qtdCompras,valorDoacao);
+				Usuarios compra = service.comprarProduto(idUsuario, idProduto, qtdCompras);
 				if(compra == null) {
 					return new ResponseEntity<String>("Produto ou usuário inválido", HttpStatus.NO_CONTENT);
 				}
