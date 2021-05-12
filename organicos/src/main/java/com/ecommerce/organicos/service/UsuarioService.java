@@ -130,13 +130,12 @@ public class UsuarioService {
 		return Optional.ofNullable(repositoryProdutos.save(produtoExistente.get()));
 	}
 	
-	public Usuarios comprarProduto(Long idUsuario, Long idProduto, int qtdCompras, double valorDoacao) {
+	public Usuarios comprarProduto(Long idUsuario, Long idProduto, int qtdCompras) {
 		Optional<Usuarios> usuarioExistente = repository.findById(idUsuario);
 		Optional<Produtos> produtoExistente = repositoryProdutos.findById(idProduto);
 			if(usuarioExistente.isPresent() && produtoExistente.isPresent()) {
 				usuarioExistente.get().getMinhasCompras().add(produtoExistente.get());
 				usuarioExistente.get().setValorCompra(produtoExistente.get().getPreco()*qtdCompras);
-				usuarioExistente.get().setDoacao(valorDoacao);
 				return repository.save(usuarioExistente.get());
 			}
 			return null;

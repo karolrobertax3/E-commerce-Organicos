@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ecommerce.organicos.model.Produtos;
 import com.ecommerce.organicos.model.util.Categoria;
+import com.ecommerce.organicos.repository.ProdutosRepository;
 import com.ecommerce.organicos.service.ProdutoService;
 
 @RestController
@@ -24,6 +25,16 @@ public class ProdutosController {
 	
 	@Autowired
 	private ProdutoService service;
+	
+	@Autowired
+	private ProdutosRepository repository;
+	
+	@GetMapping("/{id}")
+	public ResponseEntity<Produtos> getById(@PathVariable Long idProduto){
+		return repository.findById(idProduto)
+				.map(resp -> ResponseEntity.ok(resp))
+				.orElse(ResponseEntity.notFound().build());
+	}
 	
 	@GetMapping
 	public ResponseEntity<List<Produtos>> listarTodos(){
@@ -36,17 +47,18 @@ public class ProdutosController {
 	}
 	
 	@GetMapping("/categoria")
-	public ResponseEntity<List<Produtos>> listarCategoria(@RequestParam(defaultValue = " ") Categoria categoria){
+	public ResponseEntity<List<Produtos>> listarCategoria(@PathVariable Categoria categoria){
 		return new ResponseEntity<List<Produtos>> (service.listarCategoria(categoria),HttpStatus.OK);
 	}
 	
 	@GetMapping("/nome/produto")
-	public ResponseEntity<List<Produtos>> buscarPorTitulo(@RequestParam(defaultValue = " ") String titulo){
+	public ResponseEntity<List<Produtos>> buscarPorTitulo(@PathVariable String titulo){
 		return new ResponseEntity<List<Produtos>> (service.buscarPorTitulo(titulo),HttpStatus.OK);
 	}
 	
 	@GetMapping("/preco")
-	public ResponseEntity<List<Produtos>> preco(@RequestParam(defaultValue = " ") float preco1, float preco2){
+	public ResponseEntity<List<Produtos>> preco(@PathVariable float preco1, float preco2){
 		return new ResponseEntity<List<Produtos>>(service.filtrarPorPreco(preco1, preco2),HttpStatus.OK);
 	}
+	
 }
